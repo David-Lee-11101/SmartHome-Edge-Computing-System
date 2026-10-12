@@ -352,8 +352,8 @@ def validate_component_manifest():
         fail("components.json", "unsupported manifest major")
     hub = data.get("hub", {})
     required_hub = {"repositoryId", "repository", "visibility", "defaultBranch", "capabilityState"}
-    if set(hub) != required_hub or hub["visibility"] != "private":
-        fail("components.json.hub", "Hub identity must be exact and private during integration")
+    if set(hub) != required_hub or hub["visibility"] not in {"private", "public"}:
+        fail("components.json.hub", "Hub identity must be exact with private or public visibility")
     required = {"role", "repositoryId", "repository", "targetName", "commit", "defaultBranch", "contractMajor", "capabilityState"}
     ids, roles = [], []
     for index, component in enumerate(data.get("components", [])):

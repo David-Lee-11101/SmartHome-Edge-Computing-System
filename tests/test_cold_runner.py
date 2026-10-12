@@ -12,9 +12,22 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 from run_cold_system import assert_checkout, verify_session, verify_proof
 from validate_contracts import validate_document, ContractError
+import validate_contracts
 
 
 class ColdRunnerTest(unittest.TestCase):
+    def test_manifest_supports_truthful_private_and_public_visibility(self):
+        manifest=json.loads((ROOT/'components.json').read_text())
+        with tempfile.TemporaryDirectory() as directory:
+            temporary=Path(directory)
+            for visibility in ['private','public','internal']:
+                manifest['hub']['visibility']=visibility
+                (temporary/'components.json').write_text(json.dumps(manifest))
+                with patch.object(validate_contracts,'ROOT',temporary):
+                    if visibility=='internal':
+                        with self.assertRaises(ContractError):validate_contracts.validate_component_manifest()
+                    else:self.assertEqual(6,validate_contracts.validate_component_manifest())
+
     def passed_shape(self):
         manifest = json.loads((ROOT / 'components.json').read_text())
         roles = ['communication', 'logic-engine', 'traffic-profiling', 'thread-safe-scheduler', 'integrated-logic-management']
