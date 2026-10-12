@@ -310,6 +310,30 @@ def semantic_validate(contract, data):
             fail("$.causalOrder", "causal proof order is not canonical")
         if data["status"] == "passed" and data["skips"]:
             fail("$.skips", "a passed proof cannot contain skips")
+        if data["status"] == "passed":
+            roles = {item["role"] for item in data["components"]}
+            required_roles = {"integration-hub", "communication", "logic-engine", "traffic-profiling",
+                              "thread-safe-scheduler", "integrated-logic-management"}
+            if roles != required_roles or len(data["components"]) != len(required_roles):
+                fail("$.components", "a passed proof requires all six unique integration identities")
+            if not data["commands"] or any(item["status"] != "passed" for item in data["commands"]):
+                fail("$.commands", "a passed proof requires successful commands")
+            required_commands = {"build.communication", "build.logic", "build.scheduler", "test.profiling",
+                                 "build.generator", "install.management", "test.management", "compile.callbacks", "test.callback-process-cleanup", "causal.session"}
+            if not required_commands <= {item["commandId"] for item in data["commands"]}:
+                fail("$.commands", "required cold-source commands are missing")
+            if not data["outcomes"] or any(item["status"] != "passed" for item in data["outcomes"]):
+                fail("$.outcomes", "a passed proof requires successful hashed outcomes")
+            required_outcomes = {"artifact.traffic-trace", "artifact.profile-evidence", "artifact.scheduling-decision",
+                                 "artifact.feedback-journal", "artifact.management-readback", "artifact.session-result",
+                                 "artifact.generation-manifest", "artifact.feedback-profile", "artifact.action-feedback"}
+            if not required_outcomes <= {item["checkId"] for item in data["outcomes"]}:
+                fail("$.outcomes", "required causal artifact hashes are missing")
+            assert_unique([item["checkId"] for item in data["outcomes"]], "$.outcomes")
+            if any(item["evidenceHash"] == "0" * 64 for item in data["outcomes"]):
+                fail("$.outcomes", "placeholder hashes cannot establish a passed proof")
+            if not {"TrafficTrace", "ProfileEvidence", "SchedulingDecision", "LogicDefinition", "GenerationManifest"} <= data["contractVersions"].keys():
+                fail("$.contractVersions", "consumed contract versions are missing")
 
 
 def load_catalog():
@@ -328,8 +352,8 @@ def validate_component_manifest():
         fail("components.json", "unsupported manifest major")
     hub = data.get("hub", {})
     required_hub = {"repositoryId", "repository", "visibility", "defaultBranch", "capabilityState"}
-    if set(hub) != required_hub or hub["visibility"] != "private":
-        fail("components.json.hub", "Hub identity must be exact and private during integration")
+    if set(hub) != required_hub or hub["visibility"] not in {"private", "public"}:
+        fail("components.json.hub", "Hub identity must be exact with private or public visibility")
     required = {"role", "repositoryId", "repository", "targetName", "commit", "defaultBranch", "contractMajor", "capabilityState"}
     ids, roles = [], []
     for index, component in enumerate(data.get("components", [])):

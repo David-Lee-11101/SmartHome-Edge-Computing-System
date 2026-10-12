@@ -1,0 +1,26 @@
+name: Contracts and runner guards
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate contracts and hashed fixture inventory
+        run: python3 tools/validate_contracts.py
+      - name: Run contract and proof-guard regression tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Check runner syntax and vector structure
+        run: |
+          python3 -m py_compile tools/run_cold_system.py
+          node --check tools/run_causal_session.mjs
+          python3 -c "import xml.etree.ElementTree as E; E.parse('architecture/causal-system.svg')"
