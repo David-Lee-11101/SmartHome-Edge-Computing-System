@@ -1,0 +1,21 @@
+{
+  "build": {
+    "commandId": "maven.compile.001",
+    "status": "passed"
+  },
+  "generationId": "generation.sensor.001",
+  "generatorVersion": "generator.001",
+  "outputFiles": [
+    {
+      "relativePath": "../../private/file.java",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "registration": {
+    "catalogId": "local.catalog.sensor",
+    "status": "registered"
+  },
+  "schemaVersion": "1.0.1",
+  "serviceContractHash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "templateHash": "0000000000000000000000000000000000000000000000000000000000000000"
+}

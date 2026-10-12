@@ -1,0 +1,337 @@
+{
+  "$defs": {
+    "fieldDescriptor": {
+      "additionalProperties": false,
+      "properties": {
+        "fields": {
+          "items": {
+            "$ref": "#/$defs/fieldDescriptor"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "name": {
+          "pattern": "^[a-zA-Z][a-zA-Z0-9._-]{0,63}$",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "boolean",
+            "integer",
+            "number",
+            "string",
+            "null",
+            "record"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "type": "object"
+    },
+    "typedValue": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "boolean"
+            },
+            "value": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "integer"
+            },
+            "value": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "number"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "null"
+            },
+            "value": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "record"
+            },
+            "value": {
+              "additionalProperties": {
+                "$ref": "#/$defs/typedValue"
+              },
+              "maxProperties": 32,
+              "propertyNames": {
+                "pattern": "^[a-zA-Z][a-zA-Z0-9._-]{0,63}$",
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        }
+      ]
+    }
+  },
+  "$id": "https://github.com/David-Lee-11101/SmartHome-Edge-Computing-System/contracts/schemas/v1/system-proof.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "causalOrder": {
+      "items": {
+        "enum": [
+          "instrumented-rpc-trace",
+          "profile-evidence",
+          "scheduling-decision",
+          "optional-action",
+          "feedback-journal"
+        ]
+      },
+      "minItems": 5,
+      "type": "array"
+    },
+    "commands": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "commandId": {
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+            "type": "string"
+          },
+          "durationMs": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "environment": {
+            "additionalProperties": false,
+            "properties": {
+              "arch": {
+                "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+                "type": "string"
+              },
+              "os": {
+                "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+                "type": "string"
+              },
+              "runtime": {
+                "maxLength": 128,
+                "type": "string"
+              }
+            },
+            "required": [
+              "os",
+              "arch",
+              "runtime"
+            ],
+            "type": "object"
+          },
+          "status": {
+            "enum": [
+              "passed",
+              "failed",
+              "skipped"
+            ]
+          }
+        },
+        "required": [
+          "commandId",
+          "environment",
+          "durationMs",
+          "status"
+        ],
+        "type": "object"
+      },
+      "minItems": 0,
+      "type": "array"
+    },
+    "components": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "commit": {
+            "pattern": "^[a-f0-9]{40}$",
+            "type": "string"
+          },
+          "repositoryId": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "role": {
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "role",
+          "repositoryId",
+          "commit"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "contractVersions": {
+      "additionalProperties": {
+        "pattern": "^1\\.[0-9]+\\.[0-9]+$",
+        "type": "string"
+      },
+      "properties": {},
+      "required": [],
+      "type": "object"
+    },
+    "generatedAt": {
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]+)?Z$",
+      "type": "string"
+    },
+    "manifestVersion": {
+      "pattern": "^1\\.[0-9]+\\.[0-9]+$",
+      "type": "string"
+    },
+    "outcomes": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "checkId": {
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+            "type": "string"
+          },
+          "evidenceHash": {
+            "pattern": "^[a-f0-9]{64}$",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "passed",
+              "failed",
+              "pending"
+            ]
+          }
+        },
+        "required": [
+          "checkId",
+          "status",
+          "evidenceHash"
+        ],
+        "type": "object"
+      },
+      "minItems": 0,
+      "type": "array"
+    },
+    "proofId": {
+      "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+      "type": "string"
+    },
+    "skips": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "checkId": {
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+            "type": "string"
+          },
+          "reason": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "checkId",
+          "reason"
+        ],
+        "type": "object"
+      },
+      "minItems": 0,
+      "type": "array"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "failed",
+        "pending"
+      ]
+    }
+  },
+  "required": [
+    "manifestVersion",
+    "proofId",
+    "generatedAt",
+    "status",
+    "components",
+    "contractVersions",
+    "commands",
+    "outcomes",
+    "skips",
+    "causalOrder"
+  ],
+  "title": "SystemProof",
+  "type": "object"
+}

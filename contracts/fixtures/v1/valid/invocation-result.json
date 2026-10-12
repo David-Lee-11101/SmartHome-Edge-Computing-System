@@ -1,0 +1,20 @@
+{
+  "completedAt": "2026-10-12T00:00:00Z",
+  "durationMs": 8,
+  "requestId": "req.sensor.001",
+  "schemaVersion": "1.0.1",
+  "status": "success",
+  "value": {
+    "type": "record",
+    "value": {
+      "temperature": {
+        "type": "number",
+        "value": 24.5
+      },
+      "unit": {
+        "type": "string",
+        "value": "celsius"
+      }
+    }
+  }
+}

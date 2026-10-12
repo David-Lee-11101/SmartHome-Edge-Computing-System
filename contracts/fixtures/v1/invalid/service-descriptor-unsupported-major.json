@@ -1,0 +1,32 @@
+{
+  "endpoint": {
+    "catalogId": "local.catalog.sensor"
+  },
+  "metadata": {
+    "capabilityState": "experimental"
+  },
+  "operations": [
+    {
+      "name": "readEnvironment",
+      "parameters": [],
+      "returnFields": [
+        {
+          "name": "temperature",
+          "type": "number"
+        },
+        {
+          "name": "unit",
+          "type": "string"
+        }
+      ],
+      "returns": "record"
+    }
+  ],
+  "schemaVersion": "2.0.0",
+  "serviceId": "sensor.temperature",
+  "transport": {
+    "kind": "tiny-rpc-netty",
+    "protocolVersion": "tiny-rpc/1"
+  },
+  "version": "1.0.0"
+}

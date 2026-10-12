@@ -1,0 +1,278 @@
+{
+  "$defs": {
+    "fieldDescriptor": {
+      "additionalProperties": false,
+      "properties": {
+        "fields": {
+          "items": {
+            "$ref": "#/$defs/fieldDescriptor"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "name": {
+          "pattern": "^[a-zA-Z][a-zA-Z0-9._-]{0,63}$",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "boolean",
+            "integer",
+            "number",
+            "string",
+            "null",
+            "record"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "type": "object"
+    },
+    "typedValue": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "boolean"
+            },
+            "value": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "integer"
+            },
+            "value": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "number"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "null"
+            },
+            "value": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "record"
+            },
+            "value": {
+              "additionalProperties": {
+                "$ref": "#/$defs/typedValue"
+              },
+              "maxProperties": 32,
+              "propertyNames": {
+                "pattern": "^[a-zA-Z][a-zA-Z0-9._-]{0,63}$",
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        }
+      ]
+    }
+  },
+  "$id": "https://github.com/David-Lee-11101/SmartHome-Edge-Computing-System/contracts/schemas/v1/profile-evidence.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "ambiguity": {
+      "additionalProperties": false,
+      "properties": {
+        "candidateLabels": {
+          "items": {
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+            "type": "string"
+          },
+          "minItems": 0,
+          "type": "array"
+        },
+        "detected": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "detected",
+        "candidateLabels"
+      ],
+      "type": "object"
+    },
+    "anomaly": {
+      "additionalProperties": false,
+      "properties": {
+        "detected": {
+          "type": "boolean"
+        },
+        "reason": {
+          "maxLength": 256,
+          "type": "string"
+        }
+      },
+      "required": [
+        "detected",
+        "reason"
+      ],
+      "type": "object"
+    },
+    "confidence": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": "number"
+    },
+    "distance": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "fixtureHash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "label": {
+      "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+      "type": "string"
+    },
+    "modelHash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "modelVersion": {
+      "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+      "type": "string"
+    },
+    "patterns": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "details": {
+            "maxLength": 256,
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "ordering",
+              "conflict",
+              "dependency",
+              "frequency"
+            ]
+          },
+          "status": {
+            "enum": [
+              "matched",
+              "violated",
+              "unknown"
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "status",
+          "details"
+        ],
+        "type": "object"
+      },
+      "minItems": 0,
+      "type": "array"
+    },
+    "producedAt": {
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]+)?Z$",
+      "type": "string"
+    },
+    "profileId": {
+      "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+      "type": "string"
+    },
+    "schemaVersion": {
+      "pattern": "^1\\.[0-9]+\\.[0-9]+$",
+      "type": "string"
+    },
+    "traceId": {
+      "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "profileId",
+    "traceId",
+    "modelVersion",
+    "modelHash",
+    "fixtureHash",
+    "distance",
+    "label",
+    "confidence",
+    "anomaly",
+    "ambiguity",
+    "patterns",
+    "producedAt"
+  ],
+  "title": "ProfileEvidence",
+  "type": "object"
+}

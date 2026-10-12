@@ -1,0 +1,350 @@
+{
+  "$defs": {
+    "fieldDescriptor": {
+      "additionalProperties": false,
+      "properties": {
+        "fields": {
+          "items": {
+            "$ref": "#/$defs/fieldDescriptor"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "name": {
+          "pattern": "^[a-zA-Z][a-zA-Z0-9._-]{0,63}$",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "boolean",
+            "integer",
+            "number",
+            "string",
+            "null",
+            "record"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "type": "object"
+    },
+    "typedValue": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "boolean"
+            },
+            "value": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "integer"
+            },
+            "value": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "number"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "null"
+            },
+            "value": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "record"
+            },
+            "value": {
+              "additionalProperties": {
+                "$ref": "#/$defs/typedValue"
+              },
+              "maxProperties": 32,
+              "propertyNames": {
+                "pattern": "^[a-zA-Z][a-zA-Z0-9._-]{0,63}$",
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        }
+      ]
+    }
+  },
+  "$id": "https://github.com/David-Lee-11101/SmartHome-Edge-Computing-System/contracts/schemas/v1/service-descriptor.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "endpoint": {
+      "additionalProperties": false,
+      "properties": {
+        "catalogId": {
+          "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "catalogId"
+      ],
+      "type": "object"
+    },
+    "metadata": {
+      "additionalProperties": false,
+      "properties": {
+        "capabilityState": {
+          "enum": [
+            "historical",
+            "experimental",
+            "verified-component",
+            "verified-integration",
+            "future"
+          ]
+        }
+      },
+      "required": [
+        "capabilityState"
+      ],
+      "type": "object"
+    },
+    "operations": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+            "type": "string"
+          },
+          "parameters": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "fields": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "fields": {
+                        "items": {
+                          "$ref": "#/$defs/fieldDescriptor"
+                        },
+                        "minItems": 1,
+                        "type": "array"
+                      },
+                      "name": {
+                        "pattern": "^[a-zA-Z][a-zA-Z0-9._-]{0,63}$",
+                        "type": "string"
+                      },
+                      "type": {
+                        "enum": [
+                          "boolean",
+                          "integer",
+                          "number",
+                          "string",
+                          "null",
+                          "record"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "type"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "name": {
+                  "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "boolean",
+                    "integer",
+                    "number",
+                    "string",
+                    "null",
+                    "record"
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "type"
+              ],
+              "type": "object"
+            },
+            "minItems": 0,
+            "type": "array"
+          },
+          "returnFields": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "fields": {
+                  "items": {
+                    "$ref": "#/$defs/fieldDescriptor"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "name": {
+                  "pattern": "^[a-zA-Z][a-zA-Z0-9._-]{0,63}$",
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "boolean",
+                    "integer",
+                    "number",
+                    "string",
+                    "null",
+                    "record"
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "type"
+              ],
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "returns": {
+            "enum": [
+              "boolean",
+              "integer",
+              "number",
+              "string",
+              "null",
+              "record"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "parameters",
+          "returns"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "schemaVersion": {
+      "pattern": "^1\\.[0-9]+\\.[0-9]+$",
+      "type": "string"
+    },
+    "serviceId": {
+      "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+      "type": "string"
+    },
+    "transport": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "tiny-rpc-netty",
+            "legacy-typed-netty"
+          ]
+        },
+        "protocolVersion": {
+          "maxLength": 32,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "protocolVersion"
+      ],
+      "type": "object"
+    },
+    "version": {
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "serviceId",
+    "version",
+    "endpoint",
+    "transport",
+    "operations",
+    "metadata"
+  ],
+  "title": "ServiceDescriptor",
+  "type": "object"
+}

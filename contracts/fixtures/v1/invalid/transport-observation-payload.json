@@ -1,0 +1,12 @@
+{
+  "direction": "client-to-server",
+  "encodedFrameLength": 128,
+  "monotonicOffsetNanos": 0,
+  "payload": "must never be captured",
+  "protocolVersion": "tiny-rpc/1",
+  "requestId": "req.sensor.001",
+  "schemaVersion": "1.0.1",
+  "sessionId": "session.loopback.001",
+  "traceId": "trace.sensor.001",
+  "transport": "tiny-rpc-netty"
+}

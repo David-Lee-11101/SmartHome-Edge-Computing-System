@@ -1,0 +1,21 @@
+flowchart LR
+  subgraph Definition
+    M[Integrated Logic Management]
+    G[Service Generator]
+  end
+  subgraph Runtime
+    L[Logic Engine]
+    C[Netty TinyRPC Communication]
+    P[Traffic Profiling]
+    S[Thread-Safe Scheduler]
+    V[Virtual Device Provider]
+  end
+  M -->|LogicDefinition + ServiceDescriptor| G
+  G -->|GenerationManifest + local registration| L
+  L -->|InvocationRequest| C
+  C -->|InvocationResult| L
+  C -->|TransportObservation, payload-free| P
+  P -->|ProfileEvidence, before action| S
+  L -->|SchedulePlan| S
+  S -->|SchedulingDecision| V
+  V -->|ExecutionEvent, after decision| M

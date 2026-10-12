@@ -1,0 +1,32 @@
+{
+  "causalOrder": [
+    "instrumented-rpc-trace",
+    "profile-evidence",
+    "scheduling-decision",
+    "optional-action",
+    "feedback-journal"
+  ],
+  "commands": [],
+  "components": [
+    {
+      "commit": "3a804f4c045222380f0d2192f66f17ec92a8411c",
+      "repositoryId": 721463248,
+      "role": "communication"
+    }
+  ],
+  "contractVersions": {
+    "ServiceDescriptor": "1.0.0"
+  },
+  "generatedAt": "2026-10-12T00:00:00Z",
+  "manifestVersion": "1.0.1",
+  "outcomes": [
+    {
+      "checkId": "cold.source.system",
+      "evidenceHash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "status": "pending"
+    }
+  ],
+  "proofId": "proof.pending.001",
+  "skips": [],
+  "status": "pending"
+}

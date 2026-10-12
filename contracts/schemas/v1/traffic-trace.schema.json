@@ -1,0 +1,220 @@
+{
+  "$defs": {
+    "fieldDescriptor": {
+      "additionalProperties": false,
+      "properties": {
+        "fields": {
+          "items": {
+            "$ref": "#/$defs/fieldDescriptor"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "name": {
+          "pattern": "^[a-zA-Z][a-zA-Z0-9._-]{0,63}$",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "boolean",
+            "integer",
+            "number",
+            "string",
+            "null",
+            "record"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "type": "object"
+    },
+    "typedValue": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "boolean"
+            },
+            "value": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "integer"
+            },
+            "value": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "number"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "null"
+            },
+            "value": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "record"
+            },
+            "value": {
+              "additionalProperties": {
+                "$ref": "#/$defs/typedValue"
+              },
+              "maxProperties": 32,
+              "propertyNames": {
+                "pattern": "^[a-zA-Z][a-zA-Z0-9._-]{0,63}$",
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        }
+      ]
+    }
+  },
+  "$id": "https://github.com/David-Lee-11101/SmartHome-Edge-Computing-System/contracts/schemas/v1/traffic-trace.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "modelInputVersion": {
+      "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+      "type": "string"
+    },
+    "observations": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "direction": {
+            "enum": [
+              "client-to-server",
+              "server-to-client"
+            ]
+          },
+          "encodedFrameLength": {
+            "maximum": 1048576,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "monotonicOffsetNanos": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "observationId": {
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+            "type": "string"
+          },
+          "requestId": {
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+            "type": "string"
+          },
+          "sessionId": {
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "observationId",
+          "sessionId",
+          "requestId",
+          "direction",
+          "encodedFrameLength",
+          "monotonicOffsetNanos"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "schemaVersion": {
+      "pattern": "^1\\.[0-9]+\\.[0-9]+$",
+      "type": "string"
+    },
+    "sourceKind": {
+      "enum": [
+        "instrumented-rpc",
+        "synthetic-fixture"
+      ]
+    },
+    "traceId": {
+      "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "traceId",
+    "sourceKind",
+    "modelInputVersion",
+    "observations"
+  ],
+  "title": "TrafficTrace",
+  "type": "object"
+}

@@ -1,0 +1,41 @@
+{
+  "completedAt": "2026-10-12T00:00:00Z",
+  "durationMs": 8,
+  "requestId": "req.sensor.001",
+  "schemaVersion": "1.0.1",
+  "status": "success",
+  "value": {
+    "type": "record",
+    "value": {
+      "level5": {
+        "type": "record",
+        "value": {
+          "level4": {
+            "type": "record",
+            "value": {
+              "level3": {
+                "type": "record",
+                "value": {
+                  "level2": {
+                    "type": "record",
+                    "value": {
+                      "level1": {
+                        "type": "record",
+                        "value": {
+                          "level0": {
+                            "type": "string",
+                            "value": "too-deep"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

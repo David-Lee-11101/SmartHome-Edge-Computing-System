@@ -1,0 +1,13 @@
+{
+  "actionNotBefore": "2026-10-12T00:00:01Z",
+  "decision": "proceed",
+  "decisionId": "decision.cooling.001",
+  "persistedAt": "2026-10-12T00:00:00Z",
+  "planId": "plan.cooling.001",
+  "profileEvidenceId": "profile.sensor.001",
+  "reason": "known profile and condition satisfied",
+  "resolvedOrder": [
+    "task.fan.start"
+  ],
+  "schemaVersion": "1.0.1"
+}

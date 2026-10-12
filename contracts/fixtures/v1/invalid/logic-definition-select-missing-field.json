@@ -1,0 +1,76 @@
+{
+  "graphId": "logic.cooling.001",
+  "nodes": [
+    {
+      "inputs": [],
+      "kind": "service-call",
+      "nodeId": "sensor.read",
+      "operation": "readEnvironment",
+      "resultFields": [
+        {
+          "name": "temperature",
+          "type": "number"
+        },
+        {
+          "name": "unit",
+          "type": "string"
+        }
+      ],
+      "resultType": "record",
+      "serviceId": "sensor.temperature"
+    },
+    {
+      "field": "missingField",
+      "inputs": [
+        {
+          "bindingKind": "node-output",
+          "nodeId": "sensor.read"
+        }
+      ],
+      "kind": "select-field",
+      "nodeId": "sensor.temperature",
+      "resultType": "number"
+    },
+    {
+      "inputs": [
+        {
+          "bindingKind": "constant",
+          "constant": {
+            "type": "number",
+            "value": 25.0
+          }
+        }
+      ],
+      "kind": "constant",
+      "nodeId": "threshold.value",
+      "resultType": "number"
+    },
+    {
+      "inputs": [
+        {
+          "bindingKind": "node-output",
+          "nodeId": "sensor.temperature"
+        },
+        {
+          "bindingKind": "node-output",
+          "nodeId": "threshold.value"
+        }
+      ],
+      "kind": "compare",
+      "nodeId": "temperature.high",
+      "operator": "gt",
+      "resultType": "boolean"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "shouldCool",
+      "nodeId": "temperature.high"
+    }
+  ],
+  "schemaVersion": "1.0.1",
+  "timeoutPolicy": {
+    "graphTimeoutMs": 2000,
+    "nodeTimeoutMs": 500
+  }
+}

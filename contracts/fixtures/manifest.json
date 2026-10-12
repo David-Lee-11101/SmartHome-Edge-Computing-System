@@ -1,0 +1,133 @@
+{
+  "catalogVersion": "1.0.1",
+  "fixtures": [
+    {
+      "path": "contracts/fixtures/v1/invalid/execution-event-unsupported-major.json",
+      "sha256": "0f8ace270b7506eae663c0498b2c55fdd97873eeaf11a4ea367e68b94b2098f8"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/generation-manifest-traversal.json",
+      "sha256": "b7594abfd58e3e330a768de8e76a95990477532a15eb41741848ad5464c9249a"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/generation-manifest-unsupported-major.json",
+      "sha256": "6e9a00b9f2955ab8ef8a6239f51ef14c1886e54ec176553684158a1914323139"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/invocation-request-unsupported-major.json",
+      "sha256": "f8e2043b68fe604accd627babf9bc325e4914ca59efd870ae6ba521f59917fdb"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/invocation-result-record-depth.json",
+      "sha256": "6613e545bed9bd02482abfab8c48057b3fbb910c161df2bb0b795188f248613a"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/invocation-result-typed-extra-field.json",
+      "sha256": "9aa1a9f427168854a735681c8005b867fe636d22459d93376ac63e6a59f80b2d"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/invocation-result-unsupported-major.json",
+      "sha256": "b31c93a8f7bc340a8af031862f01284eb93f40a471fcb3687eac5aa4a2f63e84"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/logic-definition-arbitrary-execution.json",
+      "sha256": "236de64ecb2b3aa7e79f29d0f312c79fb1ed5fc9e6ebae8691f175e0e139f0cc"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/logic-definition-select-missing-field.json",
+      "sha256": "b84a9858b3f48cd8d321ce8d534da1923967eaf897ac2d1fcc2f5c09fed54bb7"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/logic-definition-select-type-mismatch.json",
+      "sha256": "dd972dd8adc121b1fc0bafa4a1e75fbcba724d4aeb7b2fa35a209e68ff7ebb4b"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/logic-definition-unsupported-major.json",
+      "sha256": "328cacd251d4bbf3072612e2feae064bd698ddf140c357d74eea46ab0db2d767"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/profile-evidence-unsupported-major.json",
+      "sha256": "13f31be5e66391d60d31bc378cf59bbe512dc3819bf0955c870b57da958b077e"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/schedule-plan-unsupported-major.json",
+      "sha256": "f8d04c0ab4e2167f6440d5b42c31dfd335bbd97451c52b8d7f3afaca3aeee60b"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/scheduling-decision-action-before-persist.json",
+      "sha256": "4f414d0bc8d70361ddd36e733808491d4dcab474ca483f0bfa131550078c8419"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/scheduling-decision-unsupported-major.json",
+      "sha256": "2ec8b2e88130de5a697f67c2cb722234032c4fc7cf672af5ac44479abde32c57"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/service-descriptor-unsupported-major.json",
+      "sha256": "d345d09c420f8e732e833d23f6249ec2cec0393fbff845413225ff3d0bbdd06d"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/system-proof-unsupported-major.json",
+      "sha256": "c40071f872dd5f2a45652578f11c60d161ad4e98625be0e7d27cd628320c96dc"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/traffic-trace-unsupported-major.json",
+      "sha256": "8f0ae2b178f8e4c6d4382da0d2368070440d7e1a3ec286c59fa6a1e93f440e22"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/transport-observation-payload.json",
+      "sha256": "fd9eb997b1287abd2f646300c491be676edae230f5f931d6e97c4a08c1ee77b1"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/transport-observation-unsupported-major.json",
+      "sha256": "9f4b6a27b0d99d1c0d07a5b86abf89b7832c925712cefba683aa753fcc2efeab"
+    },
+    {
+      "path": "contracts/fixtures/v1/valid/execution-event.json",
+      "sha256": "29a7fb81e56bca2c4663910b1d4952d4a2d990f28980f36b63979005022a9ac4"
+    },
+    {
+      "path": "contracts/fixtures/v1/valid/generation-manifest.json",
+      "sha256": "42d4d34934d4dddfdec8ad157782246a3616a7eeac6e770bd0daa5382cb532bc"
+    },
+    {
+      "path": "contracts/fixtures/v1/valid/invocation-request.json",
+      "sha256": "04b88f23a38dcafe9491603f5f40729eeb707cd31e465579abc9be73691830e5"
+    },
+    {
+      "path": "contracts/fixtures/v1/valid/invocation-result.json",
+      "sha256": "ebf315c8142635405b947a507dd019849417e200fe5eb2eead52103cc4135576"
+    },
+    {
+      "path": "contracts/fixtures/v1/valid/logic-definition.json",
+      "sha256": "8e4682da1b4334fc3ab8e6477276f4bdbe2cfb2c7792b771003b495f96805a93"
+    },
+    {
+      "path": "contracts/fixtures/v1/valid/profile-evidence.json",
+      "sha256": "b3c783bcd998fdd0e5e1c9ac26083ba407b837317a8fe039f22397b2b37caf2e"
+    },
+    {
+      "path": "contracts/fixtures/v1/valid/schedule-plan.json",
+      "sha256": "2a0ffc471dd17e173d400828e65e01deeab630da5ad3373c0d4b4459905ae34a"
+    },
+    {
+      "path": "contracts/fixtures/v1/valid/scheduling-decision.json",
+      "sha256": "9f243b08a9e40d1b02059de76c809378175c7016f1479a748a9a5e1876caf61d"
+    },
+    {
+      "path": "contracts/fixtures/v1/valid/service-descriptor.json",
+      "sha256": "f34f425dcd28d7043991df27c13cbf40aeaa363e561c6a2106566151ed999b4b"
+    },
+    {
+      "path": "contracts/fixtures/v1/valid/system-proof.json",
+      "sha256": "ba9d5004fcc9894558d61d03cff6d7b505a7a97f78a0027b39c175ed3e735e32"
+    },
+    {
+      "path": "contracts/fixtures/v1/valid/traffic-trace.json",
+      "sha256": "394564cb7f26748ea8e918b62918d0e2467bfa243c8c849f8575fbd62c74f654"
+    },
+    {
+      "path": "contracts/fixtures/v1/valid/transport-observation.json",
+      "sha256": "c229e15cb69c04b0fbf85418835241c13e85d083c7e67b806d12b5ba55821a07"
+    }
+  ]
+}

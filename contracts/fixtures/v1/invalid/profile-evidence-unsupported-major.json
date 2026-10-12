@@ -1,0 +1,29 @@
+{
+  "ambiguity": {
+    "candidateLabels": [
+      "temperature-read"
+    ],
+    "detected": false
+  },
+  "anomaly": {
+    "detected": false,
+    "reason": ""
+  },
+  "confidence": 0.94,
+  "distance": 0.08,
+  "fixtureHash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "label": "temperature-read",
+  "modelHash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "modelVersion": "medoid.001",
+  "patterns": [
+    {
+      "details": "request precedes response",
+      "kind": "ordering",
+      "status": "matched"
+    }
+  ],
+  "producedAt": "2026-10-12T00:00:00Z",
+  "profileId": "profile.sensor.001",
+  "schemaVersion": "2.0.0",
+  "traceId": "trace.sensor.001"
+}

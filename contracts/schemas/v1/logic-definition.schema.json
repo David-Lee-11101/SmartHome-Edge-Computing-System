@@ -1,0 +1,337 @@
+{
+  "$defs": {
+    "fieldDescriptor": {
+      "additionalProperties": false,
+      "properties": {
+        "fields": {
+          "items": {
+            "$ref": "#/$defs/fieldDescriptor"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "name": {
+          "pattern": "^[a-zA-Z][a-zA-Z0-9._-]{0,63}$",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "boolean",
+            "integer",
+            "number",
+            "string",
+            "null",
+            "record"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "type": "object"
+    },
+    "typedValue": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "boolean"
+            },
+            "value": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "integer"
+            },
+            "value": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "number"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "null"
+            },
+            "value": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "record"
+            },
+            "value": {
+              "additionalProperties": {
+                "$ref": "#/$defs/typedValue"
+              },
+              "maxProperties": 32,
+              "propertyNames": {
+                "pattern": "^[a-zA-Z][a-zA-Z0-9._-]{0,63}$",
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        }
+      ]
+    }
+  },
+  "$id": "https://github.com/David-Lee-11101/SmartHome-Edge-Computing-System/contracts/schemas/v1/logic-definition.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "graphId": {
+      "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+      "type": "string"
+    },
+    "nodes": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "field": {
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+            "type": "string"
+          },
+          "inputs": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "bindingKind": {
+                  "enum": [
+                    "constant",
+                    "node-output"
+                  ]
+                },
+                "constant": {
+                  "$ref": "#/$defs/typedValue"
+                },
+                "nodeId": {
+                  "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "bindingKind"
+              ],
+              "type": "object"
+            },
+            "minItems": 0,
+            "type": "array"
+          },
+          "kind": {
+            "enum": [
+              "constant",
+              "service-call",
+              "select-field",
+              "compare",
+              "boolean",
+              "numeric"
+            ]
+          },
+          "nodeId": {
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+            "type": "string"
+          },
+          "operation": {
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+            "type": "string"
+          },
+          "operator": {
+            "enum": [
+              "eq",
+              "ne",
+              "lt",
+              "lte",
+              "gt",
+              "gte",
+              "and",
+              "or",
+              "not",
+              "add",
+              "subtract",
+              "multiply",
+              "divide"
+            ]
+          },
+          "resultFields": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "fields": {
+                  "items": {
+                    "$ref": "#/$defs/fieldDescriptor"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "name": {
+                  "pattern": "^[a-zA-Z][a-zA-Z0-9._-]{0,63}$",
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "boolean",
+                    "integer",
+                    "number",
+                    "string",
+                    "null",
+                    "record"
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "type"
+              ],
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "resultType": {
+            "enum": [
+              "boolean",
+              "integer",
+              "number",
+              "string",
+              "null",
+              "record"
+            ]
+          },
+          "serviceId": {
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "nodeId",
+          "kind",
+          "resultType",
+          "inputs"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "outputs": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+            "type": "string"
+          },
+          "nodeId": {
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "nodeId"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "schemaVersion": {
+      "pattern": "^1\\.[0-9]+\\.[0-9]+$",
+      "type": "string"
+    },
+    "timeoutPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "graphTimeoutMs": {
+          "maximum": 60000,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "nodeTimeoutMs": {
+          "maximum": 30000,
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "graphTimeoutMs",
+        "nodeTimeoutMs"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "graphId",
+    "nodes",
+    "outputs",
+    "timeoutPolicy"
+  ],
+  "title": "LogicDefinition",
+  "type": "object"
+}
