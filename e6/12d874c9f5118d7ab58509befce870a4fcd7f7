@@ -1,0 +1,131 @@
+.gitignore
+  s_7011714e525495::t_d5f0b4825a49de 1-3
+README.md
+  s_7011714e525495::t_c0237e3a4d94d8 1-45
+RIGHTS.md
+  s_7011714e525495::t_11ec8004d415a2 1-9
+architecture/system-flow.mmd
+  s_7011714e525495::t_0d3df9aca80a37 1-21
+components.json
+  s_7011714e525495::t_6073bd8972edfa 1-72
+contracts/COMPATIBILITY.md
+  s_7011714e525495::t_cc74f667623b53 1-14
+contracts/INTEGRATION_API.md
+  s_7011714e525495::t_ad9733c17497ed 1-109
+contracts/fixtures/manifest.json
+  s_7011714e525495::t_b014573e5dbe8c 1-133
+contracts/fixtures/v1/invalid/execution-event-unsupported-major.json
+  s_7011714e525495::t_2860e939108f04 1-10
+contracts/fixtures/v1/invalid/generation-manifest-traversal.json
+  s_7011714e525495::t_3d92a50d0624a8 1-21
+contracts/fixtures/v1/invalid/generation-manifest-unsupported-major.json
+  s_7011714e525495::t_d2fbf92e3e16f0 1-21
+contracts/fixtures/v1/invalid/invocation-request-unsupported-major.json
+  s_7011714e525495::t_172853ae9804a4 1-8
+contracts/fixtures/v1/invalid/invocation-result-record-depth.json
+  s_7011714e525495::t_3432491fdd31a5 1-41
+contracts/fixtures/v1/invalid/invocation-result-typed-extra-field.json
+  s_7011714e525495::t_e897235767e14c 1-21
+contracts/fixtures/v1/invalid/invocation-result-unsupported-major.json
+  s_7011714e525495::t_38c1baa23999ce 1-20
+contracts/fixtures/v1/invalid/logic-definition-arbitrary-execution.json
+  s_7011714e525495::t_2e5432f251268f 1-76
+contracts/fixtures/v1/invalid/logic-definition-select-missing-field.json
+  s_7011714e525495::t_dcd582a613ddd9 1-76
+contracts/fixtures/v1/invalid/logic-definition-select-type-mismatch.json
+  s_7011714e525495::t_6817fcbf62acec 1-76
+contracts/fixtures/v1/invalid/logic-definition-unsupported-major.json
+  s_7011714e525495::t_018be1ab5eed50 1-76
+contracts/fixtures/v1/invalid/profile-evidence-unsupported-major.json
+  s_7011714e525495::t_d7ab682f6b496d 1-29
+contracts/fixtures/v1/invalid/schedule-plan-unsupported-major.json
+  s_7011714e525495::t_0898b8dbd789ad 1-37
+contracts/fixtures/v1/invalid/scheduling-decision-action-before-persist.json
+  s_7011714e525495::t_ecec0b12df1cf5 1-13
+contracts/fixtures/v1/invalid/scheduling-decision-unsupported-major.json
+  s_7011714e525495::t_5ceaa9e939a168 1-13
+contracts/fixtures/v1/invalid/service-descriptor-unsupported-major.json
+  s_7011714e525495::t_cc86cc5cfb014e 1-32
+contracts/fixtures/v1/invalid/system-proof-unsupported-major.json
+  s_7011714e525495::t_92ecbc09e43930 1-32
+contracts/fixtures/v1/invalid/traffic-trace-unsupported-major.json
+  s_7011714e525495::t_c4406f49312258 1-24
+contracts/fixtures/v1/invalid/transport-observation-payload.json
+  s_7011714e525495::t_906f115a737f4c 1-12
+contracts/fixtures/v1/invalid/transport-observation-unsupported-major.json
+  s_7011714e525495::t_f9a3134af60c20 1-11
+contracts/fixtures/v1/valid/execution-event.json
+  s_7011714e525495::t_649778f030f41a 1-10
+contracts/fixtures/v1/valid/generation-manifest.json
+  s_7011714e525495::t_a37206d3afdec4 1-21
+contracts/fixtures/v1/valid/invocation-request.json
+  s_7011714e525495::t_093d9aab497db7 1-8
+contracts/fixtures/v1/valid/invocation-result.json
+  s_7011714e525495::t_ef968c4743b2c7 1-20
+contracts/fixtures/v1/valid/logic-definition.json
+  s_7011714e525495::t_085b64d83ef22b 1-76
+contracts/fixtures/v1/valid/profile-evidence.json
+  s_7011714e525495::t_f8837301085193 1-29
+contracts/fixtures/v1/valid/schedule-plan.json
+  s_7011714e525495::t_bb696f32deaa4f 1-37
+contracts/fixtures/v1/valid/scheduling-decision.json
+  s_7011714e525495::t_b7ebc819ace4b3 1-13
+contracts/fixtures/v1/valid/service-descriptor.json
+  s_7011714e525495::t_de1d7844f20681 1-32
+contracts/fixtures/v1/valid/system-proof.json
+  s_7011714e525495::t_f9859f6d340046 1-32
+contracts/fixtures/v1/valid/traffic-trace.json
+  s_7011714e525495::t_1ee94e2c83abc3 1-24
+contracts/fixtures/v1/valid/transport-observation.json
+  s_7011714e525495::t_32ffec03dc3d15 1-11
+contracts/schemas/v1/execution-event.schema.json
+  s_7011714e525495::t_df6eebc0c9a592 1-215
+contracts/schemas/v1/generation-manifest.schema.json
+  s_7011714e525495::t_6cd3d4354c2396 1-243
+contracts/schemas/v1/invocation-request.schema.json
+  s_7011714e525495::t_c8c2e2dda3857d 1-185
+contracts/schemas/v1/invocation-result.schema.json
+  s_7011714e525495::t_c8d66149e2d9d9 1-207
+contracts/schemas/v1/logic-definition.schema.json
+  s_7011714e525495::t_0df73889776afd 1-337
+contracts/schemas/v1/profile-evidence.schema.json
+  s_7011714e525495::t_7a27ceb297135f 1-278
+contracts/schemas/v1/schedule-plan.schema.json
+  s_7011714e525495::t_32ef72fda3ea8e 1-266
+contracts/schemas/v1/scheduling-decision.schema.json
+  s_7011714e525495::t_4de8e2cbc4a989 1-206
+contracts/schemas/v1/service-descriptor.schema.json
+  s_7011714e525495::t_3a4fd7e9ec28b6 1-350
+contracts/schemas/v1/system-proof.schema.json
+  s_7011714e525495::t_4c02d2b4562d0a 1-337
+contracts/schemas/v1/traffic-trace.schema.json
+  s_7011714e525495::t_92fbb5bfa9a735 1-220
+contracts/schemas/v1/transport-observation.schema.json
+  s_7011714e525495::t_65d18213a902c0 1-200
+docs/IMPLEMENTATION_PLAN.md
+  s_7011714e525495::t_fa790d0c6c4ab1 1-9
+research/system-proof.pending.json
+  s_7011714e525495::t_341d82556772a8 1-43
+tests/test_contracts.py
+  s_7011714e525495::t_62a59bc727e381 1-91
+tools/build_contract_catalog.py
+  s_7011714e525495::t_6009a04756d36b 1-342
+tools/validate_contracts.py
+  s_7011714e525495::t_e837ba277ac93c 1-479
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "e612d874c9f5118d7ab58509befce870a4fcd7f7",
+  "prompts": {},
+  "sessions": {
+    "s_7011714e525495": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12529-718f-7053-849a-2fa10f2720ee",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "David Lee <109534658+David-Lee-11101@users.noreply.github.com>"
+    }
+  }
+}
