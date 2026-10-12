@@ -1,7 +1,7 @@
 {
   "manifestVersion": "1.0.0",
   "hub": {
-    "repositoryId": 1415096780,
+    "repositoryId": 1415109155,
     "repository": "https://github.com/David-Lee-11101/SmartHome-Edge-Computing-System",
     "visibility": "private",
     "defaultBranch": "main",
