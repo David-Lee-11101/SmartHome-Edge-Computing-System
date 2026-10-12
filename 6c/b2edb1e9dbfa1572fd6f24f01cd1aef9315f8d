@@ -1,0 +1,42 @@
+tools/validate_contracts.py
+  s_7011714e525495::t_da269466b43daf 271-279
+contracts/INTEGRATION_API.md
+  s_7011714e525495::t_199532735431d6 3,7,61
+research/system-proof.pending.json
+  s_7011714e525495::t_c5a9ff0ea6f125 27
+contracts/COMPATIBILITY.md
+  s_7011714e525495::t_199532735431d6 3,11
+tests/test_contracts.py
+  s_7011714e525495::t_c5a9ff0ea6f125 59-83
+tools/build_contract_catalog.py
+  s_7011714e525495::t_da269466b43daf 164,166,170-171,276,298,347
+  s_7011714e525495::t_c5a9ff0ea6f125 331-343
+contracts/fixtures/manifest.json
+  s_7011714e525495::t_e98562201b4c63 2,72-79,82,134
+contracts/fixtures/v1/invalid/traffic-trace-missing-model-input-version.json
+  s_7011714e525495::t_45d3f43762c9a8 1-29
+contracts/fixtures/v1/invalid/traffic-trace-simplified-observation.json
+  s_7011714e525495::t_f7f48406c1a2ed 1-27
+contracts/fixtures/v1/invalid/traffic-trace-unsupported-major.json
+  s_7011714e525495::t_2ad9ce3aedcd50 8,10-13,19,21-24
+contracts/fixtures/v1/valid/traffic-trace.json
+  s_7011714e525495::t_fabc85986b6fb6 8,10-13,19,21-24,27
+contracts/schemas/v1/traffic-trace.schema.json
+  s_7011714e525495::t_bcb9535112363d 170-172,179-182,186-192,196-197,202-204
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "6cb2edb1e9dbfa1572fd6f24f01cd1aef9315f8d",
+  "prompts": {},
+  "sessions": {
+    "s_7011714e525495": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12529-718f-7053-849a-2fa10f2720ee",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "David Lee <109534658+David-Lee-11101@users.noreply.github.com>"
+    }
+  }
+}
