@@ -146,7 +146,7 @@ def main():
         java = os.environ.get('MANAGEMENT_JAVA', 'java')
         mvn = [maven, '-B', '-s', str(settings), '-Dmaven.repo.local=' + str(repository)]
         run('build.communication', mvn + ['install'], sources['communication'])
-        run('build.logic', mvn + ['-DtinyRpcAdapter', 'install'], sources['logic-engine'])
+        run('build.logic', mvn + ['-DtinyRpcAdapter', '-pl', 'logic-engine-tiny-rpc-adapter', '-am', 'install'], sources['logic-engine'])
         run('build.scheduler', mvn + ['package', 'dependency:build-classpath', '-Dmdep.outputFile=target/runtime-classpath.txt'], sources['thread-safe-scheduler'])
         run('test.profiling', [sys.executable, '-m', 'unittest', 'discover', '-s', 'tests', '-v'], sources['traffic-profiling'])
         management = sources['integrated-logic-management']

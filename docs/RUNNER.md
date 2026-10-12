@@ -9,6 +9,14 @@ Maven uses an isolated local repository. npm consumes its committed lockfile. Py
 uses standard-library tooling and pinned profiler source. A new workspace protects
 previous evidence from overwrite.
 
+The Logic build selects `-DtinyRpcAdapter -pl logic-engine-tiny-rpc-adapter -am
+install`, with tests enabled. This builds the current typed core and real TinyRPC
+adapter used by generated providers. Historical legacy RPC modules have separate
+Java 8 compatibility CI; their obsolete Lombok processors do not compile on JDK 21.
+An initial full-reactor cold run failed at that historical boundary, and its failed
+proof/log remains evidence. The current integration does not require those modules;
+no dependency override or test suppression is used to mask that failure.
+
 The scheduler owns decision persistence, locks, execution and events. The bridge
 reads an authorizing decision before dispatching its fixed supported action through
 the Logic Engine. Its condition evaluator supports an independent live read after
