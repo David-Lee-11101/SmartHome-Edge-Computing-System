@@ -7,11 +7,11 @@ integration contracts and reproducible system runner.
 
 | Component | Source repository |
 | --- | --- |
-| Smart Home Communication | [Communication](https://github.com/David-Lee-11101/Handwritten-Netty-RPC) |
-| Logic Engine | [Typed execution](https://github.com/David-Lee-11101/SmartService-Discovery-RPC) |
-| Traffic Profiling | [Traffic models](https://github.com/David-Lee-11101/SmartRule-Conflict-Analyzer) |
-| Thread-Safe Scheduler | [Evidence-aware execution](https://github.com/David-Lee-11101/SmartRule-Concurrency-Scheduler) |
-| Integrated Logic Management | [Management and generation](https://github.com/David-Lee-11101/SmartRule-Automate-Composer) |
+| Smart Home Communication | [Communication](https://github.com/David-Lee-11101/Smart-Home-Communication) |
+| Logic Engine | [Typed execution](https://github.com/David-Lee-11101/SmartHome-Logic-Engine) |
+| Traffic Profiling | [Traffic models](https://github.com/David-Lee-11101/SmartHome-Traffic-Profiling) |
+| Thread-Safe Scheduler | [Evidence-aware execution](https://github.com/David-Lee-11101/SmartHome-ThreadSafe-Scheduler) |
+| Integrated Logic Management | [Management and generation](https://github.com/David-Lee-11101/SmartHome-Integrated-Logic-Management) |
 
 The manifest pins tested production source commits. Later CI-only commits can retain
 the same production source; a branch's latest metadata is not a dependency upgrade.
@@ -34,6 +34,10 @@ Communication `83ffe6d`, Logic `971693b`, Profiling `143a256`, Scheduler `ab29ac
 and Management `ae5028b`. Later source changes require their own exact-source proof;
 this cohort is retained with its original identities. Publication acceptance binds
 the final manifest to a newly generated proof, rather than relabeling this result.
+The [Releases page](https://github.com/David-Lee-11101/SmartHome-Edge-Computing-System/releases)
+is the publication location for sanitized exact-source proof receipts and source
+previews. A receipt identifies its checked-out Hub and component commits; downloaded
+evidence must be interpreted at those identities.
 
 ![Causal architecture](architecture/causal-system.svg)
 
@@ -111,7 +115,9 @@ run at the manifest commits. Independent review and publication remain separate 
 The manifest's visibility describes the recorded repository state; accepting a public
 manifest does not itself perform or authorize publication. Source-equivalence evidence
 can identify unchanged production files across documentation or CI-only commits, and
-the final proof still records the commits it actually checks out.
+the final proof still records the commits it actually checks out. See
+[production/publication equivalence](docs/PRODUCTION_EQUIVALENCE.md) for the exact
+runtime, benchmark and test boundaries.
 
 ## Rights
 

@@ -3,7 +3,7 @@
   "hub": {
     "repositoryId": 1415109155,
     "repository": "https://github.com/David-Lee-11101/SmartHome-Edge-Computing-System",
-    "visibility": "private",
+    "visibility": "public",
     "defaultBranch": "main",
     "capabilityState": "verified-component"
   },
@@ -11,9 +11,9 @@
     {
       "role": "communication",
       "repositoryId": 721463248,
-      "repository": "https://github.com/David-Lee-11101/Handwritten-Netty-RPC",
+      "repository": "https://github.com/David-Lee-11101/Smart-Home-Communication",
       "targetName": "Smart-Home-Communication",
-      "commit": "83ffe6d77bf4cd249db863f4df1e9597938b59ad",
+      "commit": "12d3d5963fb3a962f10fd42449c96471f63c0bcf",
       "defaultBranch": "master",
       "contractMajor": 1,
       "capabilityState": "verified-component"
@@ -21,9 +21,9 @@
     {
       "role": "logic-engine",
       "repositoryId": 722606506,
-      "repository": "https://github.com/David-Lee-11101/SmartService-Discovery-RPC",
+      "repository": "https://github.com/David-Lee-11101/SmartHome-Logic-Engine",
       "targetName": "SmartHome-Logic-Engine",
-      "commit": "971693b4cec8057239d6e742f958b61c83801781",
+      "commit": "1ab52e55ff607c2141666812175d2ea8cbbd4088",
       "defaultBranch": "master",
       "contractMajor": 1,
       "capabilityState": "verified-component"
@@ -31,9 +31,9 @@
     {
       "role": "traffic-profiling",
       "repositoryId": 907369008,
-      "repository": "https://github.com/David-Lee-11101/SmartRule-Conflict-Analyzer",
+      "repository": "https://github.com/David-Lee-11101/SmartHome-Traffic-Profiling",
       "targetName": "SmartHome-Traffic-Profiling",
-      "commit": "143a2561783a2efeb927ab4b833d6742dafcf369",
+      "commit": "8b62e2a2fd9560e8676f11cddd4fb5e876060a9e",
       "defaultBranch": "master",
       "contractMajor": 1,
       "capabilityState": "verified-component"
@@ -41,9 +41,9 @@
     {
       "role": "thread-safe-scheduler",
       "repositoryId": 734574352,
-      "repository": "https://github.com/David-Lee-11101/SmartRule-Concurrency-Scheduler",
+      "repository": "https://github.com/David-Lee-11101/SmartHome-ThreadSafe-Scheduler",
       "targetName": "SmartHome-ThreadSafe-Scheduler",
-      "commit": "ab29ac2b4a81f2b640b58b538ddf634b35bcd414",
+      "commit": "c1985894ac16ab8af1ab758a20df04fa649fbaf3",
       "defaultBranch": "master",
       "contractMajor": 1,
       "capabilityState": "verified-component"
@@ -51,9 +51,9 @@
     {
       "role": "integrated-logic-management",
       "repositoryId": 696115075,
-      "repository": "https://github.com/David-Lee-11101/SmartRule-Automate-Composer",
+      "repository": "https://github.com/David-Lee-11101/SmartHome-Integrated-Logic-Management",
       "targetName": "SmartHome-Integrated-Logic-Management",
-      "commit": "ae5028b78cf4946d780e82350a7ac476ea2a0aaf",
+      "commit": "fe2ab96471f46c1153ff04a95fdf47525c2bcece",
       "defaultBranch": "master",
       "contractMajor": 1,
       "capabilityState": "verified-component"
@@ -63,7 +63,7 @@
       "repositoryId": 769787741,
       "repository": "https://github.com/David-Lee-11101/SmartService-Automate-Generator",
       "targetName": "SmartService-Automate-Generator",
-      "commit": "0104cb8347b49f0b3b289f71c686bbdde602421b",
+      "commit": "ca1e19f7aac708f46a889683c5ad67888b55ddc3",
       "defaultBranch": "master",
       "contractMajor": 1,
       "capabilityState": "historical"
