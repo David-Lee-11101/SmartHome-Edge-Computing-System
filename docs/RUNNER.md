@@ -1,0 +1,25 @@
+# Cold-source causal runner
+
+The Python runner owns clean immutable checkout, build orchestration and proof.
+The Node session uses Management's generator lifecycle API to keep a real provider
+alive while external profiler and scheduler processes run. The Java bridge is a
+trusted, explicitly selected Scheduler callback; plan data cannot choose commands.
+
+Maven uses an isolated local repository. npm consumes its committed lockfile. Python
+uses standard-library tooling and pinned profiler source. A new workspace protects
+previous evidence from overwrite.
+
+The scheduler owns decision persistence, locks, execution and events. The bridge
+reads an authorizing decision before dispatching its fixed supported action through
+the Logic Engine. Its condition evaluator supports an independent live read after
+locking; this demo declares no conditions, which are covered in scheduler tests.
+
+One normal action and two reordered policy-probe actions produce exactly three
+counter increments. Deferred and abstaining probes cause zero increments. Unsupported
+contract major fails before persistence. Independent final reads verify state and count.
+
+Public proof contains command identifiers, environment summaries and artifact hashes.
+Full logs, endpoints, paths and caches remain local and require privacy review before
+publication. Controlled anomaly/ambiguity/conflict inputs are clearly identified as
+policy counterfactuals, not profiler detections. Physical deployment, learned classifier
+accuracy, distributed failures and historical experiments remain outside this proof.

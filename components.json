@@ -13,50 +13,50 @@
       "repositoryId": 721463248,
       "repository": "https://github.com/David-Lee-11101/Handwritten-Netty-RPC",
       "targetName": "Smart-Home-Communication",
-      "commit": "3a804f4c045222380f0d2192f66f17ec92a8411c",
+      "commit": "c2347e818c890feb88d9377ad5f7026bc0f65f8b",
       "defaultBranch": "master",
       "contractMajor": 1,
-      "capabilityState": "historical"
+      "capabilityState": "verified-component"
     },
     {
       "role": "logic-engine",
       "repositoryId": 722606506,
       "repository": "https://github.com/David-Lee-11101/SmartService-Discovery-RPC",
       "targetName": "SmartHome-Logic-Engine",
-      "commit": "b7a210260f411a142a1c75c1841d28fba105c929",
+      "commit": "ec1110ca904b217cbd77273bc8d73cf19dda9214",
       "defaultBranch": "master",
       "contractMajor": 1,
-      "capabilityState": "historical"
+      "capabilityState": "verified-component"
     },
     {
       "role": "traffic-profiling",
       "repositoryId": 907369008,
       "repository": "https://github.com/David-Lee-11101/SmartRule-Conflict-Analyzer",
       "targetName": "SmartHome-Traffic-Profiling",
-      "commit": "cc4ae68d38a9391c931d09c6786ded422a76cb6d",
+      "commit": "143a2561783a2efeb927ab4b833d6742dafcf369",
       "defaultBranch": "master",
       "contractMajor": 1,
-      "capabilityState": "historical"
+      "capabilityState": "verified-component"
     },
     {
       "role": "thread-safe-scheduler",
       "repositoryId": 734574352,
       "repository": "https://github.com/David-Lee-11101/SmartRule-Concurrency-Scheduler",
       "targetName": "SmartHome-ThreadSafe-Scheduler",
-      "commit": "8dedd766c7bd492354689fa4e0e87fb92f02c573",
+      "commit": "ab29ac2b4a81f2b640b58b538ddf634b35bcd414",
       "defaultBranch": "master",
       "contractMajor": 1,
-      "capabilityState": "historical"
+      "capabilityState": "verified-component"
     },
     {
       "role": "integrated-logic-management",
       "repositoryId": 696115075,
       "repository": "https://github.com/David-Lee-11101/SmartRule-Automate-Composer",
       "targetName": "SmartHome-Integrated-Logic-Management",
-      "commit": "ab8a27c8dc0ad7ce0837b9113b39d4f5766f531c",
+      "commit": "cb4fd0fa2d38dfbaf33e65feeb295b2fbe7fbc93",
       "defaultBranch": "master",
       "contractMajor": 1,
-      "capabilityState": "historical"
+      "capabilityState": "verified-component"
     },
     {
       "role": "service-generator-provenance",
