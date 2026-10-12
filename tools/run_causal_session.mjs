@@ -110,6 +110,27 @@ try {
   }
   const finalEnabled=invoke('readEnabled'), finalCount=invoke('readActionCount');
   assert.equal(finalEnabled.value.value,true); assert.equal(finalCount.value.value,3);
+  const actionFeedback=[];
+  for(const scenario of scenarios) {
+    const completed=scenario.eventRecords.filter(event=>event.state==='completed');
+    assert.deepEqual(completed.map(event=>event.taskId),scenario.decision.resolvedOrder);
+    assert.equal(completed.length,scenario.actionRecords.length);
+    for(const [index,action] of scenario.actionRecords.entries()) {
+      const traces=fs.readdirSync(evidence).filter(name=>name.startsWith('action-trace-')).map(name=>({file:path.join(evidence,name),trace:read(path.join(evidence,name))}));
+      const matches=traces.filter(item=>item.trace.traceId===action.result.traceId && item.trace.observations[0].sessionId===action.result.sessionId && item.trace.observations[0].requestId===action.result.requestId);
+      assert.equal(matches.length,1);
+      const observed=matches[0]; validate('TrafficTrace',observed.file);
+      const profileFile=path.join(evidence,`${scenario.name}-action-${index}-profile.json`);
+      run('profiler.action-feedback',config.python,['-m','smart_rule_analyzer.profile_cli','--trace',observed.file,'--model',model,'--output',profileFile,'--produced-at',new Date().toISOString()],{env:pythonEnv});
+      validate('ProfileEvidence',profileFile);
+      const classified=read(profileFile);
+      assert.equal(classified.traceId,observed.trace.traceId);
+      actionFeedback.push({executionEvent:completed[index],decisionId:action.decisionId,requestId:action.result.requestId,sessionId:action.result.sessionId,
+        traceId:observed.trace.traceId,profileEvidence:classified});
+    }
+  }
+  assert.equal(actionFeedback.length,3);
+  write('action-feedback.json',actionFeedback);
   const malformed=write('malformed-profile.json',{...normal,schemaVersion:'2.0.0'});
   const rejectPlan=write('reject-plan.json',planDocument('plan.reject'));
   const rejected=spawnSync(java,['-cp',config.schedulerCp,'concurrency.adapter.SchedulerCli','--plan',rejectPlan,'--evidence',malformed,'--decision',path.join(evidence,'rejected-decision.json'),'--trusted-model-hash',normal.modelHash,'--trusted-model-version',normal.modelVersion,'--policy-only'],{encoding:'utf8',timeout:15000,maxBuffer:65536});
@@ -117,7 +138,7 @@ try {
   assert.equal(invoke('readActionCount').value.value,3);
   write('scheduling-decision.json',scenarios[0].decision);
   write('execution-events.json',scenarios.flatMap(s=>s.eventRecords));
-  const feedback=write('feedback-journal.json',{schemaVersion:'1.0.0',source:'actual-scheduler-execution',scenarios,finalEnabled,finalCount});
+  const feedback=write('feedback-journal.json',{schemaVersion:'1.0.0',source:'actual-scheduler-execution',scenarios,finalEnabled,finalCount,actionFeedback});
   const snapshot=readEvidenceSnapshot(config.workspace);
   for(const item of Object.values(snapshot)) assert.equal(item.status,'available');
   assert.deepEqual(snapshot.profileEvidence.value,normal); assert.deepEqual(snapshot.schedulingDecision.value,scenarios[0].decision);
@@ -126,5 +147,5 @@ try {
   const feedbackTrace=path.join(evidence,'feedback-trace.json'); invoke('readActionCount',true,feedbackTrace); validate('TrafficTrace',feedbackTrace);
   const feedbackProfile=path.join(evidence,'feedback-profile.json');
   run('profiler.feedback',config.python,['-m','smart_rule_analyzer.profile_cli','--trace',feedbackTrace,'--model',model,'--output',feedbackProfile,'--produced-at',new Date().toISOString()],{env:pythonEnv}); validate('ProfileEvidence',feedbackProfile);
-  write('session-result.json',{status:'passed',records,checks:['generated-source-build-register','live-logic-tinyrpc-trace','profile-before-decision','decision-before-action','independent-state-count','policy-counterfactuals','invalid-major-rejected','management-readback','profiler-feedback'],profileEvidenceId:normal.profileId,feedbackJournal:path.basename(feedback)});
+  write('session-result.json',{status:'passed',records,checks:['generated-source-build-register','live-logic-tinyrpc-trace','profile-before-decision','decision-before-action','independent-state-count','policy-counterfactuals','invalid-major-rejected','management-readback','profiler-feedback','action-feedback-profiled'],profileEvidenceId:normal.profileId,feedbackJournal:path.basename(feedback)});
 } finally { await session.close(); }

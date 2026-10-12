@@ -326,7 +326,7 @@ def semantic_validate(contract, data):
                 fail("$.outcomes", "a passed proof requires successful hashed outcomes")
             required_outcomes = {"artifact.traffic-trace", "artifact.profile-evidence", "artifact.scheduling-decision",
                                  "artifact.feedback-journal", "artifact.management-readback", "artifact.session-result",
-                                 "artifact.generation-manifest", "artifact.feedback-profile"}
+                                 "artifact.generation-manifest", "artifact.feedback-profile", "artifact.action-feedback"}
             if not required_outcomes <= {item["checkId"] for item in data["outcomes"]}:
                 fail("$.outcomes", "required causal artifact hashes are missing")
             assert_unique([item["checkId"] for item in data["outcomes"]], "$.outcomes")

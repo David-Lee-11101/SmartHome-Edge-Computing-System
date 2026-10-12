@@ -28,12 +28,15 @@ public final class HubRpcBridge implements SchedulerPorts.ActionHandler, Schedul
         Path output = Files.createTempFile("hub-rpc-", ".json");
         Path errors = Files.createTempFile("hub-rpc-", ".log");
         Process process = null;
+        Path traceFile = null;
         try {
             List<String> command = new ArrayList<>(Arrays.asList(required("HUB_JAVA"), "-cp", required("HUB_LOGIC_CP"),
                     "io.smarthome.logic.tinyrpc.TinyRpcLogicCli", graph ? "invoke-graph" : "invoke",
                     "127.0.0.1", required("HUB_PROVIDER_PORT"), required("HUB_SERVICE_ID"), operation, arguments));
-            if (graph) command.addAll(Arrays.asList("--descriptor-file", required("HUB_DESCRIPTOR_FILE"),
-                    "--trace-file", Paths.get(required("HUB_TRACE_ROOT"), "action-trace-" + java.util.UUID.randomUUID() + ".json").toString()));
+            if (graph) {
+                traceFile = Paths.get(required("HUB_TRACE_ROOT"), "action-trace-" + java.util.UUID.randomUUID() + ".json");
+                command.addAll(Arrays.asList("--descriptor-file", required("HUB_DESCRIPTOR_FILE"), "--trace-file", traceFile.toString()));
+            }
             process = new ProcessBuilder(command)
                     .redirectOutput(output.toFile()).redirectError(errors.toFile()).start();
             if (!process.waitFor(15, TimeUnit.SECONDS)) {
@@ -45,6 +48,14 @@ public final class HubRpcBridge implements SchedulerPorts.ActionHandler, Schedul
             if (Files.size(output) > 65536) throw new IllegalStateException("RPC callback output exceeded bound");
             JsonObject result = JSON.fromJson(new String(Files.readAllBytes(output), StandardCharsets.UTF_8), JsonObject.class);
             if (!"success".equals(result.get("status").getAsString())) throw new IllegalStateException("RPC callback rejected");
+            if (traceFile != null) {
+                if (Files.size(traceFile) > 1048576) throw new IllegalStateException("RPC trace exceeded bound");
+                JsonObject trace = JSON.fromJson(new String(Files.readAllBytes(traceFile), StandardCharsets.UTF_8), JsonObject.class);
+                JsonObject observation = trace.getAsJsonArray("observations").get(0).getAsJsonObject();
+                if (!result.get("requestId").equals(observation.get("requestId"))) throw new IllegalStateException("RPC trace request mismatch");
+                result.add("traceId", trace.get("traceId"));
+                result.add("sessionId", observation.get("sessionId"));
+            }
             return result;
         } catch (InterruptedException interrupted) {
             Thread.currentThread().interrupt();

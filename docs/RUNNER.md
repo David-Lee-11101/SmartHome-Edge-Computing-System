@@ -31,6 +31,16 @@ timeout and interruption; interrupt status is restored. Process cleanup cannot r
 back an action already committed by the external provider. Cancellation prevents
 new dispatch where observed; independent reads remain the evidence of committed effects.
 
+Every actual action's trace/session/request tuple is correlated with its instrumented trace, completed
+execution event and persisted decision. The real Profiler CLI classifies each action
+trace and its exact emitted evidence is saved in the feedback journal. These are
+post-action diagnostics, distinct from the pre-action read evidence that authorized
+scheduling. A model calibrated only on reads may report an action as anomalous or
+uncertain; the runner preserves that classification instead of forcing a normal label.
+Separate CLI processes have separate sessions; a request identifier alone must not
+be used as a global join key. The bridge reads trace/session identity from the exact
+emitted trace file for that invocation before recording the correlation.
+
 Public proof contains command identifiers, environment summaries and artifact hashes.
 Full logs, endpoints, paths and caches remain local and require privacy review before
 publication. Controlled anomaly/ambiguity/conflict inputs are clearly identified as

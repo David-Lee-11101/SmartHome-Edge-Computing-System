@@ -4,6 +4,7 @@ import sys
 import tempfile
 import unittest
 import hashlib
+import copy
 from unittest.mock import patch
 from pathlib import Path
 
@@ -18,7 +19,7 @@ class ColdRunnerTest(unittest.TestCase):
         manifest = json.loads((ROOT / 'components.json').read_text())
         roles = ['communication', 'logic-engine', 'traffic-profiling', 'thread-safe-scheduler', 'integrated-logic-management']
         commands = ['build.communication', 'build.logic', 'build.scheduler', 'test.profiling', 'build.generator', 'install.management', 'test.management', 'compile.callbacks', 'test.callback-process-cleanup', 'causal.session']
-        artifacts = ['traffic-trace', 'profile-evidence', 'scheduling-decision', 'feedback-journal', 'management-readback', 'session-result', 'generation-manifest', 'feedback-profile']
+        artifacts = ['traffic-trace', 'profile-evidence', 'scheduling-decision', 'feedback-journal', 'management-readback', 'session-result', 'generation-manifest', 'feedback-profile', 'action-feedback']
         proof = json.loads((ROOT / 'contracts/fixtures/v1/valid/system-proof.json').read_text())
         proof.update(status='passed', components=[{'role':'integration-hub','repositoryId':manifest['hub']['repositoryId'],'commit':'1'*40}]+[
             {key:item[key] for key in ('role','repositoryId','commit')} for item in manifest['components'] if item['role'] in roles],
@@ -73,7 +74,7 @@ class ColdRunnerTest(unittest.TestCase):
     def test_fixture_trace_cannot_pass_live_proof(self):
         with tempfile.TemporaryDirectory() as directory:
             evidence = Path(directory)
-            checks = ['generated-source-build-register', 'live-logic-tinyrpc-trace', 'profile-before-decision', 'decision-before-action', 'independent-state-count', 'policy-counterfactuals', 'invalid-major-rejected', 'management-readback', 'profiler-feedback']
+            checks = ['generated-source-build-register', 'live-logic-tinyrpc-trace', 'profile-before-decision', 'decision-before-action', 'independent-state-count', 'policy-counterfactuals', 'invalid-major-rejected', 'management-readback', 'profiler-feedback','action-feedback-profiled']
             (evidence / 'session-result.json').write_text(json.dumps({'status': 'passed', 'checks': checks}))
             fixture = ROOT / 'contracts/fixtures/v1/valid'
             for name in ['traffic-trace', 'profile-evidence', 'scheduling-decision']:
@@ -86,7 +87,7 @@ class ColdRunnerTest(unittest.TestCase):
     def test_management_graph_identity_must_match_actual_execution(self):
         with tempfile.TemporaryDirectory() as directory:
             evidence=Path(directory)
-            checks=['generated-source-build-register','live-logic-tinyrpc-trace','profile-before-decision','decision-before-action','independent-state-count','policy-counterfactuals','invalid-major-rejected','management-readback','profiler-feedback']
+            checks=['generated-source-build-register','live-logic-tinyrpc-trace','profile-before-decision','decision-before-action','independent-state-count','policy-counterfactuals','invalid-major-rejected','management-readback','profiler-feedback','action-feedback-profiled']
             (evidence/'session-result.json').write_text(json.dumps({'status':'passed','checks':checks}))
             fixture=ROOT/'contracts/fixtures/v1/valid'
             documents={name:json.loads((fixture/(name+'.json')).read_text()) for name in ['traffic-trace','profile-evidence','scheduling-decision','logic-definition']}
@@ -98,6 +99,30 @@ class ColdRunnerTest(unittest.TestCase):
             (evidence/'preaction-invocation.json').write_text(json.dumps({'graphId':'graph.different','logicDefinition':documents['logic-definition']}))
             with self.assertRaisesRegex(ValueError,'actual executed graph'):
                 verify_session(evidence)
+
+    def test_dropped_or_mismatched_action_feedback_is_rejected(self):
+        for failure in ['dropped','mismatched']:
+            with self.subTest(failure=failure), tempfile.TemporaryDirectory() as directory:
+                evidence=Path(directory)
+                checks=['generated-source-build-register','live-logic-tinyrpc-trace','profile-before-decision','decision-before-action','independent-state-count','policy-counterfactuals','invalid-major-rejected','management-readback','profiler-feedback','action-feedback-profiled']
+                documents={'session-result':{'status':'passed','checks':checks}}
+                fixture=ROOT/'contracts/fixtures/v1/valid'
+                for name in ['traffic-trace','profile-evidence','scheduling-decision','logic-definition','execution-event']:
+                    documents[name]=json.loads((fixture/(name+'.json')).read_text())
+                documents['traffic-trace']['sourceKind']='instrumented-rpc'
+                documents['profile-evidence']['traceId']=documents['traffic-trace']['traceId']
+                documents['scheduling-decision']['profileEvidenceId']=documents['profile-evidence']['profileId']
+                documents['scheduling-decision']['decision']='proceed'
+                documents['preaction-invocation']={'logicDefinition':documents['logic-definition'],'graphId':documents['logic-definition']['graphId'],'requestId':documents['traffic-trace']['observations'][0]['requestId']}
+                documents['management-readback']={'logicDefinition':{'value':documents['logic-definition']}}
+                event=documents.pop('execution-event');event['state']='completed'
+                links=[{'executionEvent':copy.deepcopy(event),'decisionId':event['decisionId'],'requestId':'request.demo.001','traceId':documents['traffic-trace']['traceId'],'profileEvidence':copy.deepcopy(documents['profile-evidence'])} for _ in range(3)]
+                if failure=='dropped':links.pop()
+                else:links[0]['decisionId']='decision.different'
+                documents['feedback-journal']={'finalEnabled':{'value':{'type':'boolean','value':True}},'finalCount':{'value':{'type':'integer','value':3}},'actionFeedback':links,'scenarios':[]}
+                for name,value in documents.items():(evidence/(name+'.json')).write_text(json.dumps(value))
+                with self.assertRaisesRegex(ValueError,'return to profiling|not correlated'):
+                    verify_session(evidence)
 
 
 if __name__ == '__main__':

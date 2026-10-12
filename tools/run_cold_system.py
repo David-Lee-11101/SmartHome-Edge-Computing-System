@@ -33,7 +33,7 @@ def verify_session(evidence):
     result = json.loads((evidence / 'session-result.json').read_text())
     expected = {'generated-source-build-register', 'live-logic-tinyrpc-trace', 'profile-before-decision',
                 'decision-before-action', 'independent-state-count', 'policy-counterfactuals',
-                'invalid-major-rejected', 'management-readback', 'profiler-feedback'}
+                'invalid-major-rejected', 'management-readback', 'profiler-feedback', 'action-feedback-profiled'}
     if result['status'] != 'passed' or set(result['checks']) != expected:
         raise ValueError('required causal checks did not pass')
     trace = json.loads((evidence / 'traffic-trace.json').read_text())
@@ -61,6 +61,31 @@ def verify_session(evidence):
         raise ValueError('independent action count failed')
     if feedback['finalEnabled']['value'] != {'type': 'boolean', 'value': True}:
         raise ValueError('independent state read failed')
+    if len(feedback['actionFeedback']) != 3:
+        raise ValueError('executed actions did not return to profiling')
+    for action in feedback['actionFeedback']:
+        validate_document('ExecutionEvent', action['executionEvent'])
+        validate_document('ProfileEvidence', action['profileEvidence'])
+        if action['executionEvent']['state'] != 'completed' or action['executionEvent']['decisionId'] != action['decisionId'] or action['profileEvidence']['traceId'] != action['traceId']:
+            raise ValueError('action execution and profiler feedback are not correlated')
+        traces = [json.loads(file.read_text()) for file in evidence.glob('action-trace-*.json')]
+        matches = [trace for trace in traces if trace['traceId'] == action['traceId'] and trace['observations'][0]['sessionId'] == action['sessionId'] and trace['observations'][0]['requestId'] == action['requestId']]
+        if len(matches) != 1 or matches[0]['sourceKind'] != 'instrumented-rpc':
+            raise ValueError('action feedback does not reference an actual instrumented invocation')
+        validate_document('TrafficTrace', matches[0])
+        profiles = [json.loads(file.read_text()) for file in evidence.glob('*-action-*-profile.json')]
+        if action['profileEvidence'] not in profiles:
+            raise ValueError('action feedback differs from actual profiler output')
+        executions = [event for scenario in feedback['scenarios'] for event in scenario['eventRecords'] if event['state'] == 'completed']
+        if action['executionEvent'] not in executions:
+            raise ValueError('action feedback differs from actual scheduler execution')
+        invocations = [record for scenario in feedback['scenarios'] for record in scenario['actionRecords']]
+        if not any(record['decisionId'] == action['decisionId'] and record['result']['requestId'] == action['requestId'] and record['result']['sessionId'] == action['sessionId'] and record['result']['traceId'] == action['traceId'] for record in invocations):
+            raise ValueError('action feedback differs from actual action request')
+    executions = {(event['executionId'], event['sequence']) for scenario in feedback['scenarios'] for event in scenario['eventRecords'] if event['state'] == 'completed'}
+    linked = {(item['executionEvent']['executionId'], item['executionEvent']['sequence']) for item in feedback['actionFeedback']}
+    if executions != linked or len(linked) != len(feedback['actionFeedback']):
+        raise ValueError('action feedback dropped or duplicated an execution')
     return result
 
 
