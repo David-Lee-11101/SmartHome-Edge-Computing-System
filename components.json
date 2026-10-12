@@ -13,7 +13,7 @@
       "repositoryId": 721463248,
       "repository": "https://github.com/David-Lee-11101/Handwritten-Netty-RPC",
       "targetName": "Smart-Home-Communication",
-      "commit": "c2347e818c890feb88d9377ad5f7026bc0f65f8b",
+      "commit": "3d4e04f93a7a477fa9f77dbba756792120be74c1",
       "defaultBranch": "master",
       "contractMajor": 1,
       "capabilityState": "verified-component"
@@ -53,7 +53,7 @@
       "repositoryId": 696115075,
       "repository": "https://github.com/David-Lee-11101/SmartRule-Automate-Composer",
       "targetName": "SmartHome-Integrated-Logic-Management",
-      "commit": "7206cdd7c005f66a3b2107841ad7da45ad5a180b",
+      "commit": "33dad9b1a0c94ba2cf0114f090a0a69e4a768d2f",
       "defaultBranch": "master",
       "contractMajor": 1,
       "capabilityState": "verified-component"

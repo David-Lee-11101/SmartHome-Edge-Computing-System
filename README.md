@@ -5,6 +5,17 @@ communication, typed logic execution, traffic profiling, scheduling, and local
 management. Five repositories preserve their own history; this Hub owns the
 integration contracts and reproducible system runner.
 
+| Component | Source repository |
+| --- | --- |
+| Smart Home Communication | [Communication](https://github.com/David-Lee-11101/Handwritten-Netty-RPC) |
+| Logic Engine | [Typed execution](https://github.com/David-Lee-11101/SmartService-Discovery-RPC) |
+| Traffic Profiling | [Traffic models](https://github.com/David-Lee-11101/SmartRule-Conflict-Analyzer) |
+| Thread-Safe Scheduler | [Evidence-aware execution](https://github.com/David-Lee-11101/SmartRule-Concurrency-Scheduler) |
+| Integrated Logic Management | [Management and generation](https://github.com/David-Lee-11101/SmartRule-Automate-Composer) |
+
+The manifest pins tested production source commits. Later CI-only commits can retain
+the same production source; a branch's latest metadata is not a dependency upgrade.
+
 ![Causal architecture](architecture/causal-system.svg)
 
 ## Reproduce the integration
