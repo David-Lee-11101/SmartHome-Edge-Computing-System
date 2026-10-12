@@ -1,0 +1,19 @@
+components.json
+  s_7011714e525495::t_3397c47e31c737 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "ff569fdb97a7ad1f2a33665bd3eaceb1bcd28075",
+  "prompts": {},
+  "sessions": {
+    "s_7011714e525495": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12529-718f-7053-849a-2fa10f2720ee",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "David Lee <109534658+David-Lee-11101@users.noreply.github.com>"
+    }
+  }
+}
