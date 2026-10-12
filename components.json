@@ -53,7 +53,7 @@
       "repositoryId": 696115075,
       "repository": "https://github.com/David-Lee-11101/SmartRule-Automate-Composer",
       "targetName": "SmartHome-Integrated-Logic-Management",
-      "commit": "cb4fd0fa2d38dfbaf33e65feeb295b2fbe7fbc93",
+      "commit": "e3407634f8dc80688b7020a78addc8a5a5462456",
       "defaultBranch": "master",
       "contractMajor": 1,
       "capabilityState": "verified-component"
