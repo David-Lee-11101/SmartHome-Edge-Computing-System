@@ -161,12 +161,14 @@ SCHEMA_MAP = {
             "sourceKind": {"enum": ["instrumented-rpc", "synthetic-fixture"]},
             "modelInputVersion": IDENTIFIER,
             "observations": arr(obj(
-                ["observationId", "sessionId", "requestId", "direction", "encodedFrameLength", "monotonicOffsetNanos"],
+                ["schemaVersion", "traceId", "sessionId", "requestId", "direction", "encodedFrameLength", "monotonicOffsetNanos", "transport", "protocolVersion"],
                 {
-                    "observationId": IDENTIFIER, "sessionId": IDENTIFIER, "requestId": IDENTIFIER,
+                    "schemaVersion": VERSION, "traceId": IDENTIFIER, "sessionId": IDENTIFIER, "requestId": IDENTIFIER,
                     "direction": {"enum": ["client-to-server", "server-to-client"]},
                     "encodedFrameLength": {"type": "integer", "minimum": 1, "maximum": 1048576},
                     "monotonicOffsetNanos": {"type": "integer", "minimum": 0},
+                    "transport": {"const": "tiny-rpc-netty"},
+                    "protocolVersion": {"type": "string", "minLength": 1, "maxLength": 32},
                 },
             ), 1),
         },
@@ -271,7 +273,7 @@ FIXTURES = {
     "InvocationResult": {"schemaVersion": "1.0.1", "requestId": "req.sensor.001", "status": "success", "value": {"type": "record", "value": {"temperature": {"type": "number", "value": 24.5}, "unit": {"type": "string", "value": "celsius"}}}, "completedAt": NOW, "durationMs": 8},
     "LogicDefinition": {"schemaVersion": "1.0.1", "graphId": "logic.cooling.001", "nodes": [{"nodeId": "sensor.read", "kind": "service-call", "resultType": "record", "resultFields": [{"name": "temperature", "type": "number"}, {"name": "unit", "type": "string"}], "inputs": [], "serviceId": "sensor.temperature", "operation": "readEnvironment"}, {"nodeId": "sensor.temperature", "kind": "select-field", "resultType": "number", "inputs": [{"bindingKind": "node-output", "nodeId": "sensor.read"}], "field": "temperature"}, {"nodeId": "threshold.value", "kind": "constant", "resultType": "number", "inputs": [{"bindingKind": "constant", "constant": {"type": "number", "value": 25.0}}]}, {"nodeId": "temperature.high", "kind": "compare", "resultType": "boolean", "inputs": [{"bindingKind": "node-output", "nodeId": "sensor.temperature"}, {"bindingKind": "node-output", "nodeId": "threshold.value"}], "operator": "gt"}], "outputs": [{"name": "shouldCool", "nodeId": "temperature.high"}], "timeoutPolicy": {"graphTimeoutMs": 2000, "nodeTimeoutMs": 500}},
     "TransportObservation": {"schemaVersion": "1.0.0", "traceId": "trace.sensor.001", "sessionId": "session.loopback.001", "requestId": "req.sensor.001", "direction": "client-to-server", "encodedFrameLength": 128, "monotonicOffsetNanos": 0, "transport": "tiny-rpc-netty", "protocolVersion": "tiny-rpc/1"},
-    "TrafficTrace": {"schemaVersion": "1.0.0", "traceId": "trace.sensor.001", "sourceKind": "instrumented-rpc", "modelInputVersion": "trace-vector.001", "observations": [{"observationId": "observation.001", "sessionId": "session.loopback.001", "requestId": "req.sensor.001", "direction": "client-to-server", "encodedFrameLength": 128, "monotonicOffsetNanos": 0}, {"observationId": "observation.002", "sessionId": "session.loopback.001", "requestId": "req.sensor.001", "direction": "server-to-client", "encodedFrameLength": 96, "monotonicOffsetNanos": 8000000}]},
+    "TrafficTrace": {"schemaVersion": "1.0.2", "traceId": "trace.sensor.001", "sourceKind": "instrumented-rpc", "modelInputVersion": "trace-vector.001", "observations": [{"schemaVersion": "1.0.2", "traceId": "trace.sensor.001", "sessionId": "session.loopback.001", "requestId": "req.sensor.001", "direction": "client-to-server", "encodedFrameLength": 128, "monotonicOffsetNanos": 0, "transport": "tiny-rpc-netty", "protocolVersion": "1.0"}, {"schemaVersion": "1.0.2", "traceId": "trace.sensor.001", "sessionId": "session.loopback.001", "requestId": "req.sensor.001", "direction": "server-to-client", "encodedFrameLength": 96, "monotonicOffsetNanos": 8000000, "transport": "tiny-rpc-netty", "protocolVersion": "1.0"}]},
     "ProfileEvidence": {"schemaVersion": "1.0.0", "profileId": "profile.sensor.001", "traceId": "trace.sensor.001", "modelVersion": "medoid.001", "modelHash": HASH, "fixtureHash": HASH, "distance": 0.08, "label": "temperature-read", "confidence": 0.94, "anomaly": {"detected": False, "reason": ""}, "ambiguity": {"detected": False, "candidateLabels": ["temperature-read"]}, "patterns": [{"kind": "ordering", "status": "matched", "details": "request precedes response"}], "producedAt": NOW},
     "SchedulePlan": {"schemaVersion": "1.0.0", "planId": "plan.cooling.001", "tasks": [{"taskId": "task.fan.start", "dependencies": [], "readResources": ["sensor.temperature"], "writeResources": ["device.fan"], "action": {"serviceId": "device.fan", "operation": "setEnabled", "arguments": [{"type": "boolean", "value": True}]}}], "conditions": [{"conditionId": "condition.cooling", "nodeId": "temperature.high", "expected": {"type": "boolean", "value": True}}], "deadlineEpochMs": 1791763260000},
     "SchedulingDecision": {"schemaVersion": "1.0.0", "decisionId": "decision.cooling.001", "planId": "plan.cooling.001", "profileEvidenceId": "profile.sensor.001", "decision": "proceed", "reason": "known profile and condition satisfied", "resolvedOrder": ["task.fan.start"], "persistedAt": NOW, "actionNotBefore": "2026-10-12T00:00:01Z"},
@@ -293,7 +295,7 @@ def main():
         slug = "".join([("-" + c.lower()) if c.isupper() and i else c.lower() for i, c in enumerate(name)])
         write_json(SCHEMAS / f"{slug}.schema.json", contract_schema)
         version_field = "manifestVersion" if name == "SystemProof" else "schemaVersion"
-        FIXTURES[name][version_field] = "1.0.1"
+        FIXTURES[name][version_field] = "1.0.2" if name == "TrafficTrace" else "1.0.1"
         write_json(VALID / f"{slug}.json", FIXTURES[name])
         invalid = json.loads(json.dumps(FIXTURES[name]))
         invalid[version_field] = "2.0.0"
@@ -326,10 +328,23 @@ def main():
     unsafe = json.loads(json.dumps(FIXTURES["LogicDefinition"]))
     unsafe["nodes"][1]["resultType"] = "string"
     write_json(INVALID / "logic-definition-select-type-mismatch.json", unsafe)
+    unsafe = json.loads(json.dumps(FIXTURES["TrafficTrace"]))
+    del unsafe["modelInputVersion"]
+    write_json(INVALID / "traffic-trace-missing-model-input-version.json", unsafe)
+    unsafe = json.loads(json.dumps(FIXTURES["TrafficTrace"]))
+    unsafe["observations"][0] = {
+        "observationId": "observation.legacy.001",
+        "sessionId": "session.loopback.001",
+        "requestId": "req.sensor.001",
+        "direction": "client-to-server",
+        "encodedFrameLength": 128,
+        "monotonicOffsetNanos": 0,
+    }
+    write_json(INVALID / "traffic-trace-simplified-observation.json", unsafe)
 
     fixture_files = sorted([*VALID.glob("*.json"), *INVALID.glob("*.json")])
     manifest = {
-        "catalogVersion": "1.0.1",
+        "catalogVersion": "1.0.2",
         "fixtures": [
             {"path": path.relative_to(ROOT).as_posix(), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
             for path in fixture_files

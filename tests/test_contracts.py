@@ -56,6 +56,31 @@ class ContractCatalogTest(unittest.TestCase):
         data["observations"][1]["monotonicOffsetNanos"] = -1
         self.assert_rejected("TrafficTrace", data)
 
+    def test_complete_transport_observations_are_required(self):
+        data = self.fixture("traffic-trace.json")
+        validator.validate_document("TrafficTrace", data, self.catalog)
+        self.assertEqual("1.0.2", data["schemaVersion"])
+        self.assertEqual("tiny-rpc-netty", data["observations"][0]["transport"])
+        del data["observations"][0]["protocolVersion"]
+        self.assert_rejected("TrafficTrace", data)
+
+    def test_model_input_version_is_required(self):
+        data = self.fixture("traffic-trace.json")
+        del data["modelInputVersion"]
+        self.assert_rejected("TrafficTrace", data)
+
+    def test_legacy_simplified_observation_is_rejected(self):
+        data = self.fixture("traffic-trace.json")
+        data["observations"][0] = {
+            "observationId": "observation.legacy.001",
+            "sessionId": "session.loopback.001",
+            "requestId": "req.sensor.001",
+            "direction": "client-to-server",
+            "encodedFrameLength": 128,
+            "monotonicOffsetNanos": 0,
+        }
+        self.assert_rejected("TrafficTrace", data)
+
     def test_ambiguous_profile_needs_candidates(self):
         data = self.fixture("profile-evidence.json")
         data["ambiguity"] = {"detected": True, "candidateLabels": ["only-one"]}

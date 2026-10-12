@@ -167,26 +167,41 @@
             "minimum": 0,
             "type": "integer"
           },
-          "observationId": {
-            "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+          "protocolVersion": {
+            "maxLength": 32,
+            "minLength": 1,
             "type": "string"
           },
           "requestId": {
             "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
             "type": "string"
           },
+          "schemaVersion": {
+            "pattern": "^1\\.[0-9]+\\.[0-9]+$",
+            "type": "string"
+          },
           "sessionId": {
             "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
             "type": "string"
+          },
+          "traceId": {
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$",
+            "type": "string"
+          },
+          "transport": {
+            "const": "tiny-rpc-netty"
           }
         },
         "required": [
-          "observationId",
+          "schemaVersion",
+          "traceId",
           "sessionId",
           "requestId",
           "direction",
           "encodedFrameLength",
-          "monotonicOffsetNanos"
+          "monotonicOffsetNanos",
+          "transport",
+          "protocolVersion"
         ],
         "type": "object"
       },

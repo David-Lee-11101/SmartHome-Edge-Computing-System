@@ -1,5 +1,5 @@
 {
-  "catalogVersion": "1.0.1",
+  "catalogVersion": "1.0.2",
   "fixtures": [
     {
       "path": "contracts/fixtures/v1/invalid/execution-event-unsupported-major.json",
@@ -70,8 +70,16 @@
       "sha256": "c40071f872dd5f2a45652578f11c60d161ad4e98625be0e7d27cd628320c96dc"
     },
     {
+      "path": "contracts/fixtures/v1/invalid/traffic-trace-missing-model-input-version.json",
+      "sha256": "a7324969614e67752dd5f45e7019b990da66a210dd077ce9d592319af2cf5e54"
+    },
+    {
+      "path": "contracts/fixtures/v1/invalid/traffic-trace-simplified-observation.json",
+      "sha256": "0d9753886972e3011f69ccee4a2246cc5c78d51bc318aa153702193e6309c455"
+    },
+    {
       "path": "contracts/fixtures/v1/invalid/traffic-trace-unsupported-major.json",
-      "sha256": "8f0ae2b178f8e4c6d4382da0d2368070440d7e1a3ec286c59fa6a1e93f440e22"
+      "sha256": "9baebe7a0640dcae0fbe30fcccbc53e1dd96373a3883eb1e17944430000f1bda"
     },
     {
       "path": "contracts/fixtures/v1/invalid/transport-observation-payload.json",
@@ -123,7 +131,7 @@
     },
     {
       "path": "contracts/fixtures/v1/valid/traffic-trace.json",
-      "sha256": "394564cb7f26748ea8e918b62918d0e2467bfa243c8c849f8575fbd62c74f654"
+      "sha256": "947cab86e7d8317dd52d8236074340eda1c3cf06b3b2046b62138d6616faf5f8"
     },
     {
       "path": "contracts/fixtures/v1/valid/transport-observation.json",

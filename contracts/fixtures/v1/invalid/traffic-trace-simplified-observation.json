@@ -1,0 +1,27 @@
+{
+  "modelInputVersion": "trace-vector.001",
+  "observations": [
+    {
+      "direction": "client-to-server",
+      "encodedFrameLength": 128,
+      "monotonicOffsetNanos": 0,
+      "observationId": "observation.legacy.001",
+      "requestId": "req.sensor.001",
+      "sessionId": "session.loopback.001"
+    },
+    {
+      "direction": "server-to-client",
+      "encodedFrameLength": 96,
+      "monotonicOffsetNanos": 8000000,
+      "protocolVersion": "1.0",
+      "requestId": "req.sensor.001",
+      "schemaVersion": "1.0.2",
+      "sessionId": "session.loopback.001",
+      "traceId": "trace.sensor.001",
+      "transport": "tiny-rpc-netty"
+    }
+  ],
+  "schemaVersion": "1.0.2",
+  "sourceKind": "instrumented-rpc",
+  "traceId": "trace.sensor.001"
+}

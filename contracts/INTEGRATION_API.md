@@ -1,10 +1,10 @@
 # Smart Home integration API 1.0
 
-This document freezes the cross-repository integration boundary at catalog version `1.0.1`. JSON Schema files are normative for shape; this document is normative for ownership, ordering, and semantics. Canonical examples live in `contracts/fixtures/v1/valid` and schemas live in `contracts/schemas/v1`.
+This document freezes the cross-repository integration boundary at catalog version `1.0.2`. JSON Schema files are normative for shape; this document is normative for ownership, ordering, and semantics. Canonical examples live in `contracts/fixtures/v1/valid` and schemas live in `contracts/schemas/v1`.
 
 ## Common rules
 
-- All contracts use catalog major version `1`. Producers emit `1.0.1`; consumers reject any other major.
+- All contracts use catalog major version `1`. Existing documents emit `1.0.1`; corrected `TrafficTrace` documents emit `1.0.2`. Consumers reject any other major.
 - Identifiers are opaque correlation values matching `^[a-zA-Z][a-zA-Z0-9._:-]{2,127}$`. They must not encode a person, home, IP address, filesystem path, credential, or physical device serial number.
 - Timestamps are UTC RFC 3339 values ending in `Z`. Runtime duration and ordering use bounded integer fields rather than wall-clock subtraction.
 - Typed values are `{ "type": "boolean|integer|number|string|null|record", "value": ... }`; the declared type must match the JSON value. A record is an object with at most 32 constrained field names whose members are typed values. Record nesting is limited to four levels. Unknown wrapper members are rejected. No implicit coercion is allowed.
@@ -58,7 +58,7 @@ Communication emits an observation at the actual encoded-frame boundary with:
 - a non-negative offset from a session-local monotonic origin;
 - `transport=tiny-rpc-netty` and its protocol version.
 
-The contract intentionally has no payload, endpoint, device, user, or network-address field. A `TrafficTrace` orders observations by monotonic offset and labels the source as `instrumented-rpc` or `synthetic-fixture`. Only `instrumented-rpc` can satisfy the system integration proof. This interface describes application-instrumented RPC traffic, not packet capture.
+The contract intentionally has no payload, endpoint, device, user, or network-address field. A `TrafficTrace` orders complete payload-free `TransportObservation` objects by monotonic offset, requires their schema version and `traceId` to match the envelope, binds one session and request, declares `modelInputVersion`, and labels the source as `instrumented-rpc` or `synthetic-fixture`. Only `instrumented-rpc` can satisfy the system integration proof. This interface describes application-instrumented RPC traffic, not packet capture.
 
 ## ProfileEvidence
 

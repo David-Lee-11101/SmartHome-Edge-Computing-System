@@ -5,20 +5,26 @@
       "direction": "client-to-server",
       "encodedFrameLength": 128,
       "monotonicOffsetNanos": 0,
-      "observationId": "observation.001",
+      "protocolVersion": "1.0",
       "requestId": "req.sensor.001",
-      "sessionId": "session.loopback.001"
+      "schemaVersion": "1.0.2",
+      "sessionId": "session.loopback.001",
+      "traceId": "trace.sensor.001",
+      "transport": "tiny-rpc-netty"
     },
     {
       "direction": "server-to-client",
       "encodedFrameLength": 96,
       "monotonicOffsetNanos": 8000000,
-      "observationId": "observation.002",
+      "protocolVersion": "1.0",
       "requestId": "req.sensor.001",
-      "sessionId": "session.loopback.001"
+      "schemaVersion": "1.0.2",
+      "sessionId": "session.loopback.001",
+      "traceId": "trace.sensor.001",
+      "transport": "tiny-rpc-netty"
     }
   ],
-  "schemaVersion": "1.0.1",
+  "schemaVersion": "1.0.2",
   "sourceKind": "instrumented-rpc",
   "traceId": "trace.sensor.001"
 }

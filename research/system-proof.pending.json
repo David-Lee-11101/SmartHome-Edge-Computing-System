@@ -24,7 +24,7 @@
     "SchedulingDecision": "1.0.1",
     "ServiceDescriptor": "1.0.1",
     "SystemProof": "1.0.1",
-    "TrafficTrace": "1.0.1",
+    "TrafficTrace": "1.0.2",
     "TransportObservation": "1.0.1",
     "ExecutionEvent": "1.0.1"
   },

@@ -268,7 +268,15 @@ def semantic_validate(contract, data):
         offsets = [item["monotonicOffsetNanos"] for item in data["observations"]]
         if offsets != sorted(offsets):
             fail("$.observations", "observations must be monotonic")
-        assert_unique([item["observationId"] for item in data["observations"]], "$.observations")
+        for index, observation in enumerate(data["observations"]):
+            if observation["schemaVersion"] != data["schemaVersion"]:
+                fail(f"$.observations[{index}].schemaVersion", "observation version must match trace")
+            if observation["traceId"] != data["traceId"]:
+                fail(f"$.observations[{index}].traceId", "observation traceId must match trace")
+        if len({item["sessionId"] for item in data["observations"]}) != 1:
+            fail("$.observations", "one trace must contain one session")
+        if len({item["requestId"] for item in data["observations"]}) != 1:
+            fail("$.observations", "one trace must contain one request")
     elif contract == "ProfileEvidence":
         if data["anomaly"]["detected"] and not data["anomaly"]["reason"]:
             fail("$.anomaly.reason", "detected anomaly requires a reason")
