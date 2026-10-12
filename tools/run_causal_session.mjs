@@ -19,8 +19,10 @@ function run(id, command, args, options={}) {
   const start=performance.now();
   const result=spawnSync(command,args,{encoding:'utf8',timeout:180000,maxBuffer:1024*1024,...options});
   records.push({commandId:id,durationMs:Math.round(performance.now()-start),status:result.status===0?'passed':'failed'});
-  fs.writeFileSync(path.join(commandLogs,`${records.length}-${id}.log`),(result.stdout??'')+(result.stderr??''),{flag:'wx'});
-  if (result.status!==0) throw new Error(`${id} failed: ${(result.stderr??'').slice(-2000)}`);
+  fs.writeFileSync(path.join(commandLogs,`${records.length}-${id}.log`),JSON.stringify({
+    ...records[records.length-1],stdoutBytes:Buffer.byteLength(result.stdout??''),stderrBytes:Buffer.byteLength(result.stderr??'')
+  })+'\n',{flag:'wx'});
+  if (result.status!==0) throw new Error(`${id} failed; inspect the bounded command summary`);
   return result.stdout;
 }
 function validate(contract,file) { run(`validate.${contract}`,config.python,[path.join(config.hub,'tools/validate_contracts.py'),'--contract',contract,'--document',file]); }
