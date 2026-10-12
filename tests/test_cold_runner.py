@@ -17,7 +17,7 @@ class ColdRunnerTest(unittest.TestCase):
     def passed_shape(self):
         manifest = json.loads((ROOT / 'components.json').read_text())
         roles = ['communication', 'logic-engine', 'traffic-profiling', 'thread-safe-scheduler', 'integrated-logic-management']
-        commands = ['build.communication', 'build.logic', 'build.scheduler', 'test.profiling', 'build.generator', 'install.management', 'test.management', 'compile.callbacks', 'causal.session']
+        commands = ['build.communication', 'build.logic', 'build.scheduler', 'test.profiling', 'build.generator', 'install.management', 'test.management', 'compile.callbacks', 'test.callback-process-cleanup', 'causal.session']
         artifacts = ['traffic-trace', 'profile-evidence', 'scheduling-decision', 'feedback-journal', 'management-readback', 'session-result', 'generation-manifest', 'feedback-profile']
         proof = json.loads((ROOT / 'contracts/fixtures/v1/valid/system-proof.json').read_text())
         proof.update(status='passed', components=[{'role':'integration-hub','repositoryId':manifest['hub']['repositoryId'],'commit':'1'*40}]+[
@@ -81,6 +81,22 @@ class ColdRunnerTest(unittest.TestCase):
                 if name == 'traffic-trace': value['sourceKind'] = 'synthetic-fixture'
                 (evidence / (name + '.json')).write_text(json.dumps(value))
             with self.assertRaisesRegex(ValueError, 'live transport'):
+                verify_session(evidence)
+
+    def test_management_graph_identity_must_match_actual_execution(self):
+        with tempfile.TemporaryDirectory() as directory:
+            evidence=Path(directory)
+            checks=['generated-source-build-register','live-logic-tinyrpc-trace','profile-before-decision','decision-before-action','independent-state-count','policy-counterfactuals','invalid-major-rejected','management-readback','profiler-feedback']
+            (evidence/'session-result.json').write_text(json.dumps({'status':'passed','checks':checks}))
+            fixture=ROOT/'contracts/fixtures/v1/valid'
+            documents={name:json.loads((fixture/(name+'.json')).read_text()) for name in ['traffic-trace','profile-evidence','scheduling-decision','logic-definition']}
+            documents['traffic-trace']['sourceKind']='instrumented-rpc'
+            documents['profile-evidence']['traceId']=documents['traffic-trace']['traceId']
+            documents['scheduling-decision']['profileEvidenceId']=documents['profile-evidence']['profileId']
+            documents['scheduling-decision']['decision']='proceed'
+            for name,document in documents.items(): (evidence/(name+'.json')).write_text(json.dumps(document))
+            (evidence/'preaction-invocation.json').write_text(json.dumps({'graphId':'graph.different','logicDefinition':documents['logic-definition']}))
+            with self.assertRaisesRegex(ValueError,'actual executed graph'):
                 verify_session(evidence)
 
 

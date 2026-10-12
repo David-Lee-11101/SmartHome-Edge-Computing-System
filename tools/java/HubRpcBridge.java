@@ -27,13 +27,14 @@ public final class HubRpcBridge implements SchedulerPorts.ActionHandler, Schedul
     private static JsonObject invoke(String operation, String arguments, boolean graph) throws Exception {
         Path output = Files.createTempFile("hub-rpc-", ".json");
         Path errors = Files.createTempFile("hub-rpc-", ".log");
+        Process process = null;
         try {
             List<String> command = new ArrayList<>(Arrays.asList(required("HUB_JAVA"), "-cp", required("HUB_LOGIC_CP"),
                     "io.smarthome.logic.tinyrpc.TinyRpcLogicCli", graph ? "invoke-graph" : "invoke",
                     "127.0.0.1", required("HUB_PROVIDER_PORT"), required("HUB_SERVICE_ID"), operation, arguments));
             if (graph) command.addAll(Arrays.asList("--descriptor-file", required("HUB_DESCRIPTOR_FILE"),
                     "--trace-file", Paths.get(required("HUB_TRACE_ROOT"), "action-trace-" + java.util.UUID.randomUUID() + ".json").toString()));
-            Process process = new ProcessBuilder(command)
+            process = new ProcessBuilder(command)
                     .redirectOutput(output.toFile()).redirectError(errors.toFile()).start();
             if (!process.waitFor(15, TimeUnit.SECONDS)) {
                 process.destroyForcibly();
@@ -45,7 +46,33 @@ public final class HubRpcBridge implements SchedulerPorts.ActionHandler, Schedul
             JsonObject result = JSON.fromJson(new String(Files.readAllBytes(output), StandardCharsets.UTF_8), JsonObject.class);
             if (!"success".equals(result.get("status").getAsString())) throw new IllegalStateException("RPC callback rejected");
             return result;
-        } finally { Files.deleteIfExists(output); Files.deleteIfExists(errors); }
+        } catch (InterruptedException interrupted) {
+            Thread.currentThread().interrupt();
+            throw interrupted;
+        } finally {
+            try { terminateBounded(process); }
+            finally { Files.deleteIfExists(output); Files.deleteIfExists(errors); }
+        }
+    }
+
+    static void terminateBounded(Process process) {
+        if (process == null || !process.isAlive()) return;
+        boolean interrupted = Thread.interrupted();
+        try {
+            process.destroy();
+            try {
+                if (!process.waitFor(2, TimeUnit.SECONDS)) {
+                    process.destroyForcibly();
+                    process.waitFor(2, TimeUnit.SECONDS);
+                }
+            } catch (InterruptedException interruption) {
+                interrupted = true;
+                process.destroyForcibly();
+                try { process.waitFor(2, TimeUnit.SECONDS); }
+                catch (InterruptedException repeated) { interrupted = true; }
+            }
+            if (process.isAlive()) throw new IllegalStateException("RPC subprocess cleanup did not complete");
+        } finally { if (interrupted) Thread.currentThread().interrupt(); }
     }
 
     @Override public boolean evaluate(SchedulePlan plan, SchedulePlan.Task task) throws Exception {

@@ -18,6 +18,11 @@ One normal action and two reordered policy-probe actions produce exactly three
 counter increments. Deferred and abstaining probes cause zero increments. Unsupported
 contract major fails before persistence. Independent final reads verify state and count.
 
+RPC subprocesses are terminated and reaped with bounded waits on success, failure,
+timeout and interruption; interrupt status is restored. Process cleanup cannot roll
+back an action already committed by the external provider. Cancellation prevents
+new dispatch where observed; independent reads remain the evidence of committed effects.
+
 Public proof contains command identifiers, environment summaries and artifact hashes.
 Full logs, endpoints, paths and caches remain local and require privacy review before
 publication. Controlled anomaly/ambiguity/conflict inputs are clearly identified as

@@ -23,7 +23,7 @@
       "repositoryId": 722606506,
       "repository": "https://github.com/David-Lee-11101/SmartService-Discovery-RPC",
       "targetName": "SmartHome-Logic-Engine",
-      "commit": "ec1110ca904b217cbd77273bc8d73cf19dda9214",
+      "commit": "971693b4cec8057239d6e742f958b61c83801781",
       "defaultBranch": "master",
       "contractMajor": 1,
       "capabilityState": "verified-component"
@@ -53,7 +53,7 @@
       "repositoryId": 696115075,
       "repository": "https://github.com/David-Lee-11101/SmartRule-Automate-Composer",
       "targetName": "SmartHome-Integrated-Logic-Management",
-      "commit": "e3407634f8dc80688b7020a78addc8a5a5462456",
+      "commit": "7206cdd7c005f66a3b2107841ad7da45ad5a180b",
       "defaultBranch": "master",
       "contractMajor": 1,
       "capabilityState": "verified-component"

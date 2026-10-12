@@ -72,6 +72,9 @@ try {
   run('profiler.train',config.python,['-m','smart_rule_analyzer.model_cli','--training',training,'--output',model],{env:pythonEnv});
   const trace=path.join(evidence,'traffic-trace.json');
   const preaction=invoke('readEnabled',true,trace); assert.equal(preaction.value.value,false); validate('TrafficTrace',trace);
+  assert.equal(preaction.logicDefinition.graphId,preaction.graphId);
+  const logic=write('logic-definition.json',preaction.logicDefinition); validate('LogicDefinition',logic);
+  write('preaction-invocation.json',preaction);
   const profile=path.join(evidence,'profile-evidence.json');
   run('profiler.classify',config.python,['-m','smart_rule_analyzer.profile_cli','--trace',trace,'--model',model,'--output',profile,'--produced-at',new Date().toISOString()],{env:pythonEnv});
   validate('ProfileEvidence',profile);
@@ -112,7 +115,6 @@ try {
   const rejected=spawnSync(java,['-cp',config.schedulerCp,'concurrency.adapter.SchedulerCli','--plan',rejectPlan,'--evidence',malformed,'--decision',path.join(evidence,'rejected-decision.json'),'--trusted-model-hash',normal.modelHash,'--trusted-model-version',normal.modelVersion,'--policy-only'],{encoding:'utf8',timeout:15000,maxBuffer:65536});
   assert.notEqual(rejected.status,0); assert.ok(!fs.existsSync(path.join(evidence,'rejected-decision.json')));
   assert.equal(invoke('readActionCount').value.value,3);
-  const logic=write('logic-definition.json',{schemaVersion:'1.0.1',graphId:'graph.generated.read',nodes:[{nodeId:'node.read',kind:'service-call',resultType:'boolean',inputs:[],serviceId:'device.virtual-switch',operation:'readEnabled'}],outputs:[{name:'enabled',nodeId:'node.read'}],timeoutPolicy:{graphTimeoutMs:4000,nodeTimeoutMs:3000}}); validate('LogicDefinition',logic);
   write('scheduling-decision.json',scenarios[0].decision);
   write('execution-events.json',scenarios.flatMap(s=>s.eventRecords));
   const feedback=write('feedback-journal.json',{schemaVersion:'1.0.0',source:'actual-scheduler-execution',scenarios,finalEnabled,finalCount});

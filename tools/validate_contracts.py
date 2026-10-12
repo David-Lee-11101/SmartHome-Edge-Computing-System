@@ -319,7 +319,7 @@ def semantic_validate(contract, data):
             if not data["commands"] or any(item["status"] != "passed" for item in data["commands"]):
                 fail("$.commands", "a passed proof requires successful commands")
             required_commands = {"build.communication", "build.logic", "build.scheduler", "test.profiling",
-                                 "build.generator", "install.management", "test.management", "compile.callbacks", "causal.session"}
+                                 "build.generator", "install.management", "test.management", "compile.callbacks", "test.callback-process-cleanup", "causal.session"}
             if not required_commands <= {item["commandId"] for item in data["commands"]}:
                 fail("$.commands", "required cold-source commands are missing")
             if not data["outcomes"] or any(item["status"] != "passed" for item in data["outcomes"]):

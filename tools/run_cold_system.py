@@ -46,6 +46,16 @@ def verify_session(evidence):
         raise ValueError('profile is not correlated to live transport evidence')
     if decision['profileEvidenceId'] != profile['profileId'] or decision['decision'] != 'proceed':
         raise ValueError('scheduler did not consume the observed profile')
+    logic = json.loads((evidence / 'logic-definition.json').read_text())
+    invocation = json.loads((evidence / 'preaction-invocation.json').read_text())
+    validate_document('LogicDefinition', logic)
+    if logic != invocation['logicDefinition'] or logic['graphId'] != invocation['graphId']:
+        raise ValueError('management graph differs from actual executed graph')
+    if invocation['requestId'] != trace['observations'][0]['requestId']:
+        raise ValueError('executed graph invocation differs from observed trace')
+    snapshot = json.loads((evidence / 'management-readback.json').read_text())
+    if snapshot['logicDefinition']['value'] != logic:
+        raise ValueError('management graph readback differs from executed graph')
     feedback = json.loads((evidence / 'feedback-journal.json').read_text())
     if feedback['finalCount']['value'] != {'type': 'integer', 'value': 3}:
         raise ValueError('independent action count failed')
@@ -61,7 +71,7 @@ def verify_proof(proof, workspace, manifest):
         raise ValueError('system proof is not passed')
     identities = {item['role']: item for item in proof['components']}
     for role in ROLES:
-        expected = manifest['components'][next(i for i, item in enumerate(manifest['components']) if item['role'] == role)]
+        expected = next(item for item in manifest['components'] if item['role'] == role)
         if identities[role]['commit'] != expected['commit'] or identities[role]['repositoryId'] != expected['repositoryId']:
             raise ValueError('proof component identity differs from immutable manifest')
     if identities['integration-hub']['repositoryId'] != manifest['hub']['repositoryId']:
@@ -69,6 +79,12 @@ def verify_proof(proof, workspace, manifest):
     assert_checkout(ROOT, identities['integration-hub']['commit'])
     evidence = workspace / 'runtime/evidence'
     verify_session(evidence)
+    files = [file for file in evidence.iterdir() if file.is_file()]
+    if any(file.is_symlink() for file in files):
+        raise ValueError('proof evidence cannot use symbolic links')
+    inventory = ['artifact.' + file.stem.replace('_', '-') for file in files]
+    if len(inventory) != len(set(inventory)) or set(inventory) != {item['checkId'] for item in proof['outcomes']}:
+        raise ValueError('proof artifact inventory does not match actual evidence')
     for outcome in proof['outcomes']:
         candidates = [file for file in evidence.iterdir() if 'artifact.' + file.stem.replace('_', '-') == outcome['checkId']]
         if len(candidates) != 1 or hashlib.sha256(candidates[0].read_bytes()).hexdigest() != outcome['evidenceHash']:
@@ -142,7 +158,8 @@ def main():
         cp = os.pathsep.join([str(scheduler / 'target/classes'), (scheduler / 'target/runtime-classpath.txt').read_text().strip()])
         callbacks = workspace / 'callback-classes'
         callbacks.mkdir()
-        run('compile.callbacks', ['javac', '-cp', cp, '-d', str(callbacks), str(ROOT / 'tools/java/HubRpcBridge.java')])
+        run('compile.callbacks', ['javac', '-cp', cp, '-d', str(callbacks), str(ROOT / 'tools/java/HubRpcBridge.java'), str(ROOT / 'tools/java/HubRpcBridgeProcessTest.java')])
+        run('test.callback-process-cleanup', [java, '-cp', os.pathsep.join([str(callbacks), cp]), 'integration.HubRpcBridgeProcessTest'])
         config = workspace / 'session-config.json'
         config.write_text(json.dumps({'hub': str(ROOT), 'management': str(management), 'profiling': str(sources['traffic-profiling']),
                                      'workspace': str(workspace / 'runtime'), 'schedulerCp': os.pathsep.join([str(callbacks), cp]),
